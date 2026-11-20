@@ -1,0 +1,70 @@
+/* Material: liquid. Each key is a pool of state colour held inside a rim of liquid metal, both cut from baked 9-slice
+   art (light, dark and gold rims). Idle keys are a flat pool in a dulled silver rim. A waiting key swaps to the gold
+   rim and is the only one whose halo breathes. Palettes: liquid-light, liquid-dark. */
+:root[data-material="liquid"] {
+  --key-radius: 26px;
+  .root { background: radial-gradient(90% 80% at 50% 15%, var(--room-1), var(--room-2)); color: var(--ink); }
+  /* the key is only the rim and the pool: no plate, so the ripple edge keeps its own shape */
+  .key { background: transparent; overflow: visible; }
+  .key:active:not(:disabled) { transform: scale(.98); }
+  .sent { border-radius: inherit; }
+  /* the pool, sunk a little under the rim */
+  .key::before { content: ""; position: absolute; inset: 9px; z-index: 1; pointer-events: none; border-radius: calc(var(--key-radius) - 8px); background: radial-gradient(100% 80% at 40% 25%, color-mix(in oklab, rgb(var(--c)) 40%, #fff), color-mix(in oklab, rgb(var(--c)) 70%, #fff)); box-shadow: inset 0 2px 5px rgba(0, 0, 0, var(--pool-shade-a)), inset 0 -2px 3px rgba(255, 255, 255, var(--pool-rim-a)); }
+  /* the liquid metal rim */
+  .key::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border: 0 solid; border-radius: inherit; border-image: var(--rim) 64 fill / 32px stretch; filter: drop-shadow(0 5px 5px var(--rim-shadow)); }
+  .glow, .grain, .mark { display: none; }
+  .chip { color: color-mix(in oklab, rgb(var(--cd)) 88%, #000); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--cd), .3); }
+  .time { color: var(--soft-1); }
+  .extra { color: #fff; background: rgb(var(--cd)); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 80%, #000); }
+  .name { color: var(--ink); font-size: 17.5px; text-shadow: var(--ink-shadow); }
+  .task { color: var(--soft-1); }
+  /* waiting: the gold rim, a lit ring and a halo that breathes */
+  .s-needs.key::after { border-image-source: var(--rim-wait); }
+  .s-needs.well { border-radius: calc(var(--key-radius) + 3px); box-shadow: 0 0 0 2px rgba(var(--c), .4), 0 0 26px 3px rgba(var(--c), .5); animation: liquid-halo 2.2s ease-in-out infinite; }
+  /* idle: a flat pool in a dulled rim */
+  .s-idle .key::before { background: var(--pool-idle); }
+  .s-idle .key::after { filter: saturate(0) brightness(.85) contrast(.7) drop-shadow(0 5px 5px var(--rim-shadow)); }
+  .s-idle .chip { color: var(--soft-3); background: var(--idle-chip); box-shadow: none; }
+  .s-idle .label, .s-idle .time, .s-idle .task { color: var(--soft-3); }
+  .s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: an empty socket, no metal */
+  .s-empty.key::after { display: none; }
+  .s-empty.key::before { background: var(--hole); box-shadow: inset 0 2px 6px var(--hole-shade); }
+  .s-empty.well { opacity: .7; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts: the meters sit in a neutral pool inside the same rim */
+  .acct.key::before { background: var(--pool-acct); }
+  .acct .chip { color: var(--acct-chip-ink); background: var(--acct-chip-bg); box-shadow: none; }
+  .acct .label { color: var(--soft-1); }
+  .acct .mn, .acct .mv { color: var(--ink); }
+  .acct .mr { color: var(--soft-1); opacity: 1; }
+  .bar { background: var(--bar-track); }
+  .t-ok { background: rgb(var(--c-work)); box-shadow: 0 0 6px rgba(var(--c-work), .6); }
+  .t-warn { background: rgb(var(--c-wait)); box-shadow: 0 0 6px rgba(var(--c-wait), .6); }
+  .t-bad { background: rgb(var(--c-stall)); box-shadow: 0 0 6px rgba(var(--c-stall), .6); }
+  .fdots i { box-shadow: 0 0 0 1.5px var(--fdots-ring); }
+  .well.folder::before, .well.folder::after { background: linear-gradient(160deg, var(--metal-1), var(--metal-2)); opacity: .85; }
+  .tool { color: var(--ink); background: var(--tool-bg); }
+  /* the long-press card: a poured plate in the same metal frame */
+  .lift { background: radial-gradient(70% 45% at 18% 0%, rgba(var(--c), .25), transparent 70%), var(--ui-bg); box-shadow: 0 0 0 3px var(--lift-rim), 0 0 50px -12px rgba(var(--c), .5), 0 40px 80px -20px var(--rim-shadow); }
+  .lift > .glow, .lift > .grain { display: none; }
+  .lift-head .chip { color: color-mix(in oklab, rgb(var(--cd)) 88%, #000); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--cd), .3); }
+  .back.key::before { background: var(--pool-idle); }
+  .back.key::after { filter: saturate(0) brightness(.85) contrast(.7) drop-shadow(0 5px 5px var(--rim-shadow)); }
+  .back .face svg { color: var(--ink); }
+}
+:root[data-material="liquid"][data-scheme="dark"] {
+  .key:not(.s-idle, .s-empty, .acct, .back)::before { background: radial-gradient(100% 80% at 40% 25%, color-mix(in oklab, rgb(var(--c)) 50%, rgb(var(--cd))), color-mix(in oklab, rgb(var(--cd)) 55%, #000)); }
+  .key:not(.s-idle, .s-empty, .acct) .chip { color: rgb(var(--c)); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--c), .5); }
+  .key:not(.s-idle, .s-empty, .acct) .extra { background: rgba(255, 255, 255, .16); }
+  .key:not(.s-idle, .s-empty, .acct) .label { color: color-mix(in oklab, rgb(var(--c)) 72%, #fff); }
+  .lift-head .chip { color: rgb(var(--c)); box-shadow: inset 0 0 0 1px rgba(var(--c), .5); }
+}
+:root[data-material="liquid"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+}
+@keyframes liquid-halo {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(var(--c), .38), 0 0 22px 2px rgba(var(--c), .45); }
+  50% { box-shadow: 0 0 0 2px rgba(var(--c), .55), 0 0 32px 6px rgba(var(--c), .6); }
+}

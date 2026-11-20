@@ -1,0 +1,38 @@
+/* Palette: gel-dark, material gel. The same candy gel lit on a black table, halos stronger. */
+:root[data-theme="gel-dark"] {
+  --page-bg: #09090c;
+  --room-1: #1b1b21;
+  --room-2: #08080a;
+  --lift-gloss: .06;
+  --drop-a: .75;
+  --halo-a: .95;
+  --frost-1: #2f3036;
+  --idle-gloss: .16;
+  --frost-2: #26272c;
+  --frost-rim: rgba(255, 255, 255, .12);
+  --frost-skirt: #141418;
+  --frost-drop: rgba(0, 0, 0, .8);
+  --frost-chip: rgba(255, 255, 255, .08);
+  --dent: #131317;
+  --dent-shade: rgba(0, 0, 0, .8);
+  --milk-1: #e9ebef;
+  --milk-2: #c3c7cf;
+  --milk-skirt: #7d828c;
+  --milk-ink: #15171c;
+  --milk-ink-2: rgba(21, 23, 28, .7);
+  --milk-track: rgba(21, 23, 28, .14);
+  --ink: #ffffff;
+  --soft-1: rgba(255, 255, 255, .82);
+  --soft-2: rgba(255, 255, 255, .7);
+  --soft-3: rgba(255, 255, 255, .64);
+  --ui-bg: #18181d;
+  --ui-ink: #f4f4f6;
+  --ui-ink-2: rgba(255, 255, 255, .6);
+  --ui-hair: rgba(255, 255, 255, .09);
+  --ui-accent: #60a5fa;
+  --ui-on-accent: #071a33;
+  --scrim: rgba(0, 0, 0, .6);
+  --focus: #93c5fd;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}

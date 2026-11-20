@@ -1,0 +1,71 @@
+/* Material: led. Each key is a dot-matrix panel: a bezel, a grid of unlit LEDs across the face, the state icon lit
+   in dots on the text-free right side, and the state colour glowing up from the bottom rows. Idle keys are panels
+   with the matrix off. A waiting key blinks its icon and is the only one that blinks. Palettes: led-light, led-dark. */
+:root[data-material="led"] {
+  --key-radius: 18px;
+  .root { background: radial-gradient(90% 80% at 50% 45%, var(--room-1), var(--room-2)); color: var(--ink); }
+  .key { background: linear-gradient(180deg, var(--panel-1), var(--panel-2)); box-shadow: inset 0 0 0 1px var(--panel-line), inset 0 2px 6px var(--panel-shade), 0 10px 20px -12px var(--panel-drop); }
+  .key:active:not(:disabled) { transform: scale(.985); box-shadow: inset 0 0 0 1px var(--panel-line), inset 0 2px 8px var(--panel-shade); }
+  /* the unlit matrix */
+  .key::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; background: radial-gradient(circle, var(--grid-dot) 1.3px, transparent 1.7px) 0 0 / 5px 5px; }
+  /* the lit icon: the state glyph cut into its own dots */
+  .mark { display: block; position: absolute; z-index: 1; top: 15%; right: 7%; width: 48%; height: 48%; color: color-mix(in oklab, rgb(var(--c)) 72%, rgb(var(--cd))); -webkit-mask: radial-gradient(circle, #000 1.5px, transparent 1.9px) 0 0 / 5px 5px; mask: radial-gradient(circle, #000 1.5px, transparent 1.9px) 0 0 / 5px 5px; filter: drop-shadow(0 0 2px rgba(var(--c), .8)); }
+  /* the bottom rows picking up the state light */
+  .key::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; background: radial-gradient(circle, rgba(var(--c), .45) 1.3px, transparent 1.7px) 0 0 / 5px 5px; -webkit-mask: linear-gradient(0deg, #000, transparent 26%); mask: linear-gradient(0deg, #000, transparent 26%); }
+  .glow { display: none; }
+  .grain { opacity: 0; }
+  .chip { color: color-mix(in oklab, rgb(var(--cd)) 88%, #000); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--cd), .28); }
+  .time { color: var(--soft-1); }
+  .extra { color: #fff; background: rgb(var(--cd)); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 80%, #000); }
+  .name { color: var(--ink); font-size: 17.5px; text-shadow: var(--ink-shadow); }
+  .task { color: var(--soft-1); text-shadow: var(--ink-shadow); }
+  /* waiting: a lit ring and a halo around the panel; the icon blinks */
+  .s-needs.well { border-radius: calc(var(--key-radius) + 3px); box-shadow: 0 0 0 2px rgba(var(--c), .45), 0 0 30px 0 rgba(var(--c), .5); }
+  .s-needs .mark { animation: led-blink 1.1s steps(2, jump-none) infinite; }
+  /* idle: the matrix off */
+  .s-idle .key { background: linear-gradient(180deg, var(--idle-1), var(--idle-2)); }
+  .s-idle .mark, .s-idle .key::after { opacity: 0; }
+  .s-idle .chip { color: var(--soft-3); background: var(--idle-chip); box-shadow: none; }
+  .s-idle .label, .s-idle .time, .s-idle .task { color: var(--soft-3); }
+  .s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: a dark panel with nothing lit */
+  .s-empty.key { background: var(--hole); box-shadow: inset 0 2px 6px var(--hole-shade); }
+  .s-empty.key::after { display: none; }
+  .s-empty.well { opacity: .75; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts and the Mac key: the same panel, meters over a dimmed matrix */
+  .acct.key { background: linear-gradient(180deg, var(--acct-1), var(--acct-2)); }
+  .acct.key::before, .dev.key::before { opacity: .55; }
+  .acct.key::after, .dev.key::after { display: none; }
+  .acct .chip { color: var(--acct-chip-ink); background: var(--acct-chip-bg); box-shadow: none; }
+  .acct .label { color: var(--soft-1); }
+  .acct .mn, .acct .mv { color: var(--ink); }
+  .acct .mr { color: var(--soft-1); opacity: 1; }
+  .bar { background: var(--bar-track); }
+  .t-ok { background: rgb(var(--c-work)); box-shadow: 0 0 6px rgba(var(--c-work), .6); }
+  .t-warn { background: rgb(var(--c-wait)); box-shadow: 0 0 6px rgba(var(--c-wait), .6); }
+  .t-bad { background: rgb(var(--c-stall)); box-shadow: 0 0 6px rgba(var(--c-stall), .6); }
+  .fdots i { box-shadow: 0 0 0 1.5px var(--fdots-ring); }
+  .well.folder::before, .well.folder::after { background: linear-gradient(180deg, var(--panel-1), var(--panel-2)); box-shadow: inset 0 0 0 1px var(--panel-line); }
+  .tool { color: var(--ink); background: var(--tool-bg); }
+  /* the long-press card: a larger panel with the matrix continuing across it */
+  .lift { background: radial-gradient(circle, var(--lift-grid) 1.5px, transparent 1.9px) 0 0 / 8px 8px, radial-gradient(80% 50% at 50% 0%, rgba(var(--c), .22), transparent 70%), var(--ui-bg); box-shadow: inset 0 0 0 1px var(--panel-line), 0 0 0 3px rgba(var(--c), .28), 0 0 50px -12px rgba(var(--c), .5), 0 40px 80px -20px var(--panel-drop); }
+  .lift > .glow { display: none; }
+  .lift > .grain { opacity: 0; }
+  .lift-head .chip { color: color-mix(in oklab, rgb(var(--cd)) 88%, #000); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--cd), .28); }
+  .back.key { background: linear-gradient(180deg, var(--idle-1), var(--idle-2)); }
+  .back .face svg { color: var(--ink); }
+}
+:root[data-material="led"][data-scheme="dark"] {
+  .mark { color: rgb(var(--c)); filter: drop-shadow(0 0 2px rgba(var(--c), 1)) drop-shadow(0 0 7px rgba(var(--c), .75)); }
+  .key::after { background: radial-gradient(circle, rgba(var(--c), .5) 1.3px, transparent 1.7px) 0 0 / 5px 5px; }
+  .key:not(.s-idle, .s-empty, .acct) .chip { color: rgb(var(--c)); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--c), .5); }
+  .key:not(.s-idle, .s-empty, .acct) .extra { background: rgba(255, 255, 255, .16); }
+  .key:not(.s-idle, .s-empty, .acct) .label { color: color-mix(in oklab, rgb(var(--c)) 72%, #fff); }
+  .lift-head .chip { color: rgb(var(--c)); box-shadow: inset 0 0 0 1px rgba(var(--c), .5); }
+}
+:root[data-material="led"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+}
+@keyframes led-blink { 0% { opacity: 1; } 100% { opacity: .3; } }

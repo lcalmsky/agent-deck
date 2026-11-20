@@ -1,0 +1,80 @@
+/* Material: ink. Keys are drawn, not built: a paper face, an outline in one slightly wobbly pen line (#deck-ink),
+   a second open stroke that stops short, flat colour only in small areas. A waiting key's line boils (#deck-ink-b).
+   Palette: lineart. */
+:root[data-material="ink"] {
+  --deck-pad: 0px;
+  .root { background: var(--paper); color: var(--ink); }
+  .backdrop { background: radial-gradient(90% 70% at 50% 40%, var(--paper), var(--page-bg)); }
+  .well { padding-bottom: 4px; }
+  .key { background: var(--paper-key); box-shadow: none; }
+  /* the outline, one pen line run through the wobble filter */
+  .key::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    z-index: 1;
+    border: 1.4px solid var(--pen);
+    border-radius: calc(var(--key-radius) - 3px);
+    filter: url(#deck-ink);
+    pointer-events: none;
+  }
+  /* the second stroke: bottom and right only, fading out before the corners like a pen lifting */
+  .key::after {
+    content: "";
+    position: absolute;
+    inset: 5px 5px 4px 9px;
+    z-index: 1;
+    border: 0 solid var(--pen-soft);
+    border-width: 0 1px 1px 0;
+    border-radius: calc(var(--key-radius) - 5px);
+    -webkit-mask-image: linear-gradient(135deg, transparent 52%, #000 70%, #000 88%, transparent 97%);
+    mask-image: linear-gradient(135deg, transparent 52%, #000 70%, #000 88%, transparent 97%);
+    filter: url(#deck-ink-b);
+    pointer-events: none;
+  }
+  .key:active:not(:disabled) { transform: translateY(2px); }
+  /* flat colour, used sparingly: a wash on the lower corner of an active key */
+  .glow { left: 2px; right: 2px; bottom: 2px; height: 42%; border-radius: 0 0 calc(var(--key-radius) - 2px) calc(var(--key-radius) - 2px); background: rgba(var(--c), .1); opacity: 0; }
+  .s-done .glow, .s-working .glow, .s-stalled .glow { opacity: 1; }
+  .s-needs .glow { opacity: 1; height: 100%; border-radius: calc(var(--key-radius) - 2px); background: rgba(var(--c), .2); }
+  .s-needs .key::before { border-width: 1.8px; animation: ink-boil .5s steps(1) infinite; }
+  .grain { mix-blend-mode: multiply; opacity: .035; }
+  /* the state icon drawn large and faint in the corner, in the same thin pen */
+  .mark { display: block; right: -8%; bottom: -10%; width: 64%; height: 64%; color: var(--pen-faint); filter: url(#deck-ink); }
+  .mark svg { stroke-width: 1.1; }
+  .chip { color: var(--pen); background: rgb(var(--c)); box-shadow: inset 0 0 0 1.3px var(--pen); filter: url(#deck-ink); }
+  .chip svg { stroke-width: 2; }
+  .s-idle .chip, .dev .chip { background: var(--paper); }
+  .time { color: var(--ink-3); }
+  .extra { color: var(--pen); background: none; box-shadow: inset 0 0 0 1px var(--pen-soft); }
+  .label { color: rgb(var(--cd)); }
+  .name { color: var(--ink); }
+  .task { color: var(--ink-2); }
+  /* idle and empty recede: a lighter line, then only a dotted pencil guide */
+  .s-idle .key::before { border-color: var(--pen-soft); }
+  .s-idle .key::after { display: none; }
+  .s-idle .name { color: var(--ink-2); }
+  .s-idle .label { color: var(--ink-3); }
+  .s-empty.key { background: transparent; }
+  .s-empty.key::before { border: 1.2px dashed var(--pen-faint); }
+  .s-empty.key::after { display: none; }
+  .slot { background: var(--pen-faint); }
+  .bar { height: 6px; background: none; box-shadow: inset 0 0 0 1px var(--pen-soft); border-radius: 3px; }
+  .fill { border-radius: 3px; }
+  .t-ok { background: var(--pen); }
+  .t-warn { background: var(--meter-warn); }
+  .t-bad { background: var(--meter-bad); }
+  .badge { color: var(--paper); background: var(--pen); }
+  .dot { box-shadow: none; }
+  /* folders: the sheets behind are more paper, drawn with the same pen */
+  .well.folder::before, .well.folder::after { background: var(--paper-key); box-shadow: inset 0 0 0 1.2px var(--pen-soft); filter: url(#deck-ink); }
+  /* the long-press card: a larger sheet with the same outline */
+  .lift { background: var(--paper-key); box-shadow: inset 0 0 0 1.4px var(--pen), 0 18px 40px -18px rgba(40, 36, 30, .35); }
+  .lift > .glow, .lift > .grain { display: none; }
+  .lift-head .chip { color: var(--pen); background: rgb(var(--c)); box-shadow: inset 0 0 0 1.3px var(--pen); }
+  .lift-go { color: var(--paper); background: var(--pen); }
+  .say.bot, .say.ask { box-shadow: inset 0 0 0 1px var(--pen-soft); }
+}
+:root[data-material="ink"] .deck.lifted .grid, :root[data-material="ink"] .deck.lifted .acct-row { filter: blur(2px) opacity(.55); }
+/* line boil: the same outline redrawn with a second wobble, as hand-drawn frames do */
+@keyframes ink-boil { 0% { filter: url(#deck-ink); } 50% { filter: url(#deck-ink-b); } }

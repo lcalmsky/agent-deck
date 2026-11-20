@@ -1,0 +1,47 @@
+/* Palette: metal-light, material metal. Polished chrome and pale anodized faces in a white studio. */
+:root[data-theme="metal-light"] {
+  --page-bg: #eceef1;
+  --room-1: #ffffff;
+  --room-2: #dfe2e7;
+  --chassis-1: #fdfdfe;
+  --chassis-2: #e7eaee;
+  --chassis-hi: rgba(255, 255, 255, .95);
+  --chassis-lo: rgba(0, 0, 0, .06);
+  --chassis-shadow: rgba(30, 36, 46, .45);
+  --bezel: linear-gradient(180deg, #ffffff 0%, #dde3ea 14%, #8e98a5 40%, #fbfcfd 50%, #606a77 62%, #b8c0ca 84%, #f1f4f7 100%);
+  --bezel-gold: linear-gradient(180deg, #fff8e6 0%, #f3d79a 14%, #9a7a3a 40%, #fffaf0 50%, #6e5422 62%, #d8b673 84%, #fff4dc 100%);
+  --bezel-idle: linear-gradient(180deg, #e9ebee, #c4c8ce);
+  --set-1: #f2f4f7;
+  --set-2: #9aa1ab;
+  --face-base: #ffffff;
+  --idle-face-1: #eceef1;
+  --idle-face-2: #dcdfe3;
+  --acct-face-1: #eef0f2;
+  --acct-face-2: #dcdfe3;
+  --key-shadow: rgba(30, 36, 46, .5);
+  --halo-a: .5;
+  --gloss-a: .6;
+  --glint-a: .75;
+  --chip-ink-n: #ffffff;
+  --chip-bg-n: #4b505a;
+  --idle-chip: rgba(0, 0, 0, .05);
+  --hole: #d8dbdf;
+  --hole-shade: rgba(30, 36, 46, .3);
+  --bar-track: rgba(30, 30, 40, .1);
+  --tool-a: .7;
+  --ink: #15171b;
+  --ink-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+  --soft-1: rgba(21, 23, 27, .76);
+  --soft-2: rgba(21, 23, 27, .7);
+  --soft-3: rgba(21, 23, 27, .55);
+  --ui-bg: #fbfbfc;
+  --ui-ink: #15171b;
+  --ui-ink-2: rgba(21, 23, 27, .62);
+  --ui-hair: rgba(21, 23, 27, .08);
+  --ui-accent: #2a2d33;
+  --ui-on-accent: #ffffff;
+  --scrim: rgba(24, 27, 32, .3);
+  --focus: #b45309;
+  --sent-bg: rgba(21, 23, 27, .78);
+  --sent-ink: #fbfbfc;
+}

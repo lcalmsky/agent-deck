@@ -15,6 +15,10 @@ Several palettes can share one material (`ceramic` and `charcoal` both use the c
    `name` is what the settings sheet shows, in Korean. `swatch` is the colour of its chip in the picker.
 4. Preview with `/?theme=<id>` (not saved), then check the rules below on the iPad.
 
+A theme that follows the system appearance on its own takes `scheme: "auto"`, two palettes and a theme-color per scheme:
+`{ id, name, scheme: "auto", material, palettes: { light: "<id>-light", dark: "<id>-dark" }, bar: { light, dark }, swatch }`.
+Each palette file is a normal palette (`:root[data-theme="<id>-light"]`); `data-theme` gets the palette id and `data-scheme` the live appearance, so material rules under `[data-scheme="light"]` follow the system. `bar` is required for an auto theme (it sets the browser theme-color), and `swatch` can be a split `linear-gradient`. Assets go in `public/assets/themes/`; refer to them as `url("../../assets/themes/<file>")` from a material or a palette, which resolves to `/assets/themes/` either way.
+
 `AUTO` in `registry.js` decides which theme "자동" picks for the light and dark system appearance.
 
 ## Scope
@@ -41,8 +45,11 @@ Several palettes can share one material (`ceramic` and `charcoal` both use the c
 | `.acct-row` | the bottom row: each account is a two-column `.key.acct` in its `.well`, then the Mac key `.key.dev`; the key rules above already style them |
 | `.acct.is-default`, `.badge` | the account new sessions start under, and its "기본" badge |
 | `.aface`, `.meters`, `.bar`, `.fill.t-ok/.t-warn/.t-bad` | an account key's face and its usage bars |
+| `.key::before`, `.key::after` | free for a material (`ink` draws its outline strokes there); `layout.css` does not use them |
+| `.well.folder::before/::after` | the stacked sheets behind a folder key; `layout.css` draws them, a material may restyle them |
+| `#deck-ink`, `#deck-ink-b` | SVG wobble filters in `index.html` (two seeds), for hand-drawn lines: `filter: url(#deck-ink)` |
 
-Geometry (grid, key size, text sizes, the face layout) belongs to `layout.css`. A material may change radius through `--key-radius`, frame through `--deck-pad`, and a name size, nothing else that moves content.
+Geometry (grid, key size, text sizes, the face layout) belongs to `layout.css`. A material may change radius through `--key-radius`, frame through `--deck-pad`, a name size, a `.well` padding of 10px or less (a setting or a skirt around the key; the key shrinks inside it) and the usage `.bar` height up to 6px, nothing else that moves content.
 
 ## State contract
 

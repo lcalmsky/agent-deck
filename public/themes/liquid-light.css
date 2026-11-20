@@ -1,0 +1,40 @@
+/* Palette: liquid-light, material liquid. Bright pools in a silver ripple rim. */
+:root[data-theme="liquid-light"] {
+  --page-bg: #eceef2;
+  --room-1: #ffffff;
+  --room-2: #dfe3ea;
+  --rim: url("../../assets/themes/liquid-rim-light-9slice.webp");
+  --rim-wait: url("../../assets/themes/liquid-rim-gold-9slice.webp");
+  --rim-shadow: rgba(36, 40, 48, .35);
+  --pool-shade-a: .35;
+  --pool-rim-a: .6;
+  --pool-idle: #e6e7ea;
+  --pool-acct: linear-gradient(150deg, #eef0f3, #dfe2e7);
+  --metal-1: #f4f5f7;
+  --metal-2: #a7acb5;
+  --lift-rim: #cfd3d9;
+  --idle-chip: rgba(30, 34, 40, .06);
+  --acct-chip-ink: #ffffff;
+  --acct-chip-bg: #3c4653;
+  --hole: #e3e5e9;
+  --hole-shade: rgba(36, 40, 48, .24);
+  --bar-track: rgba(20, 26, 36, .12);
+  --chip-bg: rgba(255, 255, 255, .7);
+  --ink: #141820;
+  --ink-shadow: 0 1px 0 rgba(255, 255, 255, .55);
+  --soft-1: rgba(20, 24, 32, .78);
+  --soft-2: rgba(20, 24, 32, .7);
+  --soft-3: rgba(20, 24, 32, .55);
+  --fdots-ring: rgba(255, 255, 255, .85);
+  --tool-bg: rgba(255, 255, 255, .55);
+  --ui-bg: #fbfcfe;
+  --ui-ink: #141820;
+  --ui-ink-2: rgba(20, 24, 32, .62);
+  --ui-hair: rgba(20, 24, 32, .08);
+  --ui-accent: #22344f;
+  --ui-on-accent: #ffffff;
+  --scrim: rgba(20, 26, 36, .3);
+  --focus: #b45309;
+  --sent-bg: rgba(20, 24, 32, .78);
+  --sent-ink: #fbfcfe;
+}

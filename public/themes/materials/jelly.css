@@ -1,0 +1,77 @@
+/* Material: jelly. Each key is a thick translucent candy: light pools at the bottom where the gel is thickest, the
+   top is shaded under its own weight, and a wet gloss blob sits on the crown. Idle keys are cloudy clear gel. A
+   waiting key wears a light ring and is the only one that wobbles. Palettes: jelly-light, jelly-dark. */
+:root[data-material="jelly"] {
+  --key-radius: 34px;
+  --deck-pad: 0px;
+  .root { background: radial-gradient(90% 80% at 50% 15%, var(--room-1), var(--room-2)); color: var(--ink); }
+  .well { padding-bottom: 6px; }
+  .key {
+    --st-1: var(--c);
+    --st-2: var(--cd);
+    /* the veil sinks the lower half so the name and task keep contrast on a deep candy */
+    --veil: linear-gradient(0deg, rgba(0, 0, 0, .6), rgba(0, 0, 0, .28) 45%, transparent 72%);
+    background: var(--veil), radial-gradient(90% 80% at 50% 105%, rgba(var(--st-1), var(--jelly-a1)), rgba(var(--st-2), var(--jelly-a2)) 50%, rgba(var(--st-2), var(--jelly-a3)) 100%), var(--jelly-base);
+    box-shadow:
+      inset 0 -10px 18px -4px var(--pool),
+      inset 0 8px 14px -6px var(--shade),
+      inset 0 0 0 1.5px rgba(255, 255, 255, var(--rim-a)),
+      0 12px 20px -10px rgba(var(--cd), var(--drop-a));
+  }
+  .key:active:not(:disabled) { transform: scale(.96); box-shadow: inset 0 -6px 12px -4px var(--pool), inset 0 10px 16px -8px var(--shade), inset 0 0 0 1.5px rgba(255, 255, 255, var(--rim-a)), 0 5px 10px -6px rgba(var(--cd), .5); }
+  /* the wet gloss on the crown */
+  .key::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; background: radial-gradient(38% 22% at 34% 16%, rgba(255, 255, 255, var(--gloss-1)), transparent 100%), radial-gradient(6% 6% at 80% 22%, rgba(255, 255, 255, var(--gloss-2)), transparent 100%); }
+  .glow { display: none; }
+  .grain { opacity: 0; }
+  .mark { display: none; }
+  /* waiting: a ring and a halo stay when motion is off; the whole key wobbles */
+  .s-needs.well { animation: jelly-squish 2.2s ease-in-out infinite; transform-origin: 50% 100%; }
+  .s-needs .key { filter: brightness(1.04) saturate(1.12); }
+  .chip { color: rgb(var(--c)); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--c), .45); }
+  .time, .task { color: var(--soft-1); }
+  .extra { color: #fff; background: rgba(var(--cd), .95); }
+  .label { color: color-mix(in oklab, rgb(var(--c)) 70%, #fff); }
+  .name { color: var(--ink); text-shadow: var(--ink-shadow); }
+  /* idle: cloudy clear gel, nothing coloured in it */
+  .well.s-idle .key { background: radial-gradient(90% 80% at 50% 105%, var(--idle-1), var(--idle-2) 70%); box-shadow: inset 0 0 0 1.5px var(--idle-line), var(--idle-shadow); }
+  .well.s-idle .key::after { opacity: .25; }
+  .well.s-idle .chip { color: var(--soft-3); background: var(--idle-chip); box-shadow: none; }
+  .well.s-idle .label, .well.s-idle .time, .well.s-idle .task { color: var(--soft-3); }
+  .well.s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: a soft dent in the mat */
+  .well.s-empty .key { background: var(--dent); box-shadow: inset 0 3px 8px var(--dent-shade); }
+  .well.s-empty .key::after { display: none; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts and the Mac key: milky white jelly */
+  .well .key.acct, .well .key.dev, .well .key.back { background: radial-gradient(90% 80% at 50% 105%, var(--acct-1), var(--acct-2) 70%); box-shadow: inset 0 0 0 1.5px var(--idle-line), var(--idle-shadow); }
+  /* the crown gloss would sit on the meter row of a wide account key */
+  .well .key.acct::after, .well .key.dev::after, .well .key.back::after { opacity: .35; }
+  .well .key.acct .chip { color: var(--chip-ink-n); background: var(--chip-bg-n); box-shadow: none; }
+  .well .key.acct .label { color: var(--soft-1); }
+  .acct .mn, .acct .mv { color: var(--ink); }
+  .acct .mr { color: var(--soft-1); opacity: 1; }
+  .bar { height: 6px; border-radius: 3px; background: var(--bar-track); }
+  .fill { border-radius: 3px; }
+  .t-ok { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-work)) 60%, #fff), rgb(var(--c-work))); }
+  .t-warn { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-wait)) 60%, #fff), rgb(var(--c-wait))); }
+  .t-bad { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-stall)) 60%, #fff), rgb(var(--c-stall))); }
+  .tool { color: var(--ink); background: rgba(255, 255, 255, var(--tool-a)); }
+  .back .face svg { color: var(--ink); }
+  /* the long-press card: a slab of milky gel with a gloss cap */
+  .lift { background: linear-gradient(180deg, rgba(255, 255, 255, var(--lift-gloss)), transparent 22%), radial-gradient(80% 50% at 50% 0%, rgba(var(--c), .22), transparent 70%), var(--ui-bg); box-shadow: inset 0 0 0 1.5px var(--idle-line), 0 0 0 4px rgba(var(--c), .5), 0 0 56px -8px rgba(var(--c), .55), 0 40px 80px -20px var(--lift-drop); }
+  .lift-head .chip { color: rgb(var(--cd)); background: radial-gradient(120% 100% at 50% 0%, color-mix(in oklab, rgb(var(--c)) 70%, #fff), rgb(var(--c))); box-shadow: inset 0 -2px 4px rgba(var(--cd), .3); }
+  .lift-go { color: color-mix(in oklab, rgb(var(--cd)) 25%, #0c0c10); background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c)) 55%, #fff), rgb(var(--c)) 55%); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .4), 0 4px 0 color-mix(in oklab, rgb(var(--cd)) 80%, rgb(var(--c))); }
+}
+:root[data-material="jelly"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+  .key { --st-2: var(--c); --veil: none; --jelly-a1: .35; --jelly-a2: .7; --jelly-a3: .88; --pool: rgba(255, 255, 255, .55); --shade: rgba(var(--cd), .55); --rim-a: .35; --drop-a: .5; }
+  .s-needs.well { box-shadow: 0 0 0 3px rgba(var(--c), .9), 0 0 30px 0 rgba(var(--c), var(--halo-a)); border-radius: var(--key-radius); }
+  .chip { color: color-mix(in oklab, rgb(var(--cd)) 85%, #000); background: rgba(255, 255, 255, .62); box-shadow: inset 0 0 0 1px rgba(var(--cd), .35); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 80%, #000); }
+  .tool { background: rgba(0, 0, 0, .07); }
+}
+:root[data-material="jelly"][data-scheme="dark"] {
+  .key { --jelly-a1: 1; --jelly-a2: .82; --jelly-a3: .6; --pool: rgba(var(--c), .7); --shade: rgba(0, 0, 0, .6); --rim-a: .18; --drop-a: .6; }
+  .s-needs.well { box-shadow: 0 0 0 3px rgba(var(--c), .85), 0 0 36px 2px rgba(var(--c), var(--halo-a)); border-radius: var(--key-radius); }
+}
+@keyframes jelly-squish { 0%, 100% { transform: scale(1, 1); } 22% { transform: scale(1.04, .96); } 44% { transform: scale(.98, 1.02); } 62% { transform: scale(1.01, .99); } }

@@ -1,0 +1,71 @@
+/* Material: crystal. Each key is a cut gem in a platinum setting: a stone in the state colour's own tones, faceted by
+   a greyscale facet plate blended over it, with a sparkle on the right. Idle keys are dull quartz in a matte setting.
+   A waiting key is the brightest stone, its sparkle the only thing that moves. Palettes: crystal-light, crystal-dark. */
+:root[data-material="crystal"] {
+  --key-radius: 22px;
+  --deck-pad: 22px;
+  .root { background: radial-gradient(90% 80% at 50% 18%, var(--room-1), var(--room-2)); color: var(--ink); }
+  .deck { border-radius: 40px; background: linear-gradient(180deg, var(--tray-1), var(--tray-2)); box-shadow: inset 0 1px 0 var(--tray-hi), inset 0 0 0 1px var(--tray-line), 0 30px 70px -30px var(--tray-shadow); }
+  /* the platinum setting around the stone */
+  .key { background: var(--bezel); box-shadow: 0 7px 16px -7px var(--key-shadow); }
+  .key:active:not(:disabled) { transform: scale(.97); box-shadow: 0 3px 8px -5px var(--key-shadow); }
+  .key::before { content: ""; position: absolute; inset: 5px; z-index: 1; pointer-events: none; border-radius: calc(var(--key-radius) - 5px); background: radial-gradient(120% 90% at 30% 20%, rgba(var(--c), .55), rgba(var(--cd), .55) 75%), var(--gem-base); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .35); }
+  /* the facets: a 9-slice greyscale plate blended into the stone */
+  .key::after { content: ""; position: absolute; inset: 5px; z-index: 1; pointer-events: none; border-radius: calc(var(--key-radius) - 5px); border: 0 solid; border-image: url("../../assets/themes/gem-facet-9slice.webp") 120 fill / 60px stretch; mix-blend-mode: overlay; opacity: .9; }
+  /* the sparkle: right of centre so the face text stays clear */
+  .glow { inset: 0; z-index: 1; background: url("../../assets/themes/gem-spark.webp") right 4% center / auto 62% no-repeat; opacity: .85; }
+  .grain { opacity: 0; }
+  .mark { display: none; }
+  /* waiting: the stone at its brightest, a halo in the setting, a twinkle as the only motion */
+  .s-needs.well { box-shadow: 0 0 0 1px rgba(var(--c), .7), 0 0 32px -2px rgba(var(--c), var(--halo-a)), 0 7px 16px -7px var(--key-shadow); }
+  .well.s-needs .glow { opacity: 1; filter: brightness(1.3); animation: crystal-twinkle 2.4s ease-in-out infinite; }
+  .chip { color: color-mix(in oklab, rgb(var(--c)) 70%, #fff); background: rgba(0, 0, 0, .4); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 0 0 1px rgba(var(--c), .45); }
+  .time, .task { color: var(--soft-1); }
+  .extra { color: #fff; background: rgba(var(--cd), .95); }
+  .label { color: color-mix(in oklab, rgb(var(--c)) 70%, #fff); }
+  .name { color: var(--ink); text-shadow: var(--ink-shadow); }
+  /* idle: quartz, no light in it */
+  .well.s-idle .key { background: var(--bezel-idle); }
+  .well.s-idle .key::before { background: linear-gradient(160deg, var(--quartz-1), var(--quartz-2)); }
+  .well.s-idle .key::after { opacity: .22; }
+  .well.s-idle .glow { display: none; }
+  .well.s-idle .chip { color: var(--soft-3); background: var(--idle-chip); box-shadow: none; }
+  .well.s-idle .label, .well.s-idle .time, .well.s-idle .task { color: var(--soft-3); }
+  .well.s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: only the setting, nothing in it */
+  .s-empty.key { background: var(--bezel-idle); box-shadow: none; opacity: .6; }
+  .well.s-empty .key::before { background: var(--hole); box-shadow: inset 0 2px 6px var(--hole-shade); }
+  .well.s-empty .key::after, .well.s-empty .glow { display: none; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts and the Mac key: smoky quartz, set like the rest, no state light, no sparkle over the meters */
+  .well .key.acct::before, .well .key.dev::before, .well .key.back::before { background: linear-gradient(160deg, var(--acct-face-1), var(--acct-face-2)); }
+  .well .key.acct .glow, .well .key.dev .glow, .well .key.back .glow { display: none; }
+  .well .key.acct::after, .well .key.dev::after, .well .key.back::after { opacity: .3; }
+  .well .key.acct .chip { color: var(--chip-ink-n); background: var(--chip-bg-n); box-shadow: none; }
+  .well .key.acct .label { color: var(--soft-1); }
+  .acct .mn, .acct .mv { color: var(--ink); }
+  .acct .mr { color: var(--soft-1); opacity: 1; }
+  .bar { background: var(--bar-track); }
+  .t-ok { background: rgb(var(--c-work)); box-shadow: 0 0 6px rgba(var(--c-work), .6); }
+  .t-warn { background: rgb(var(--c-wait)); box-shadow: 0 0 6px rgba(var(--c-wait), .6); }
+  .t-bad { background: rgb(var(--c-stall)); box-shadow: 0 0 6px rgba(var(--c-stall), .6); }
+  .tool { color: var(--ink); background: rgba(255, 255, 255, var(--tool-a)); }
+  .back .face svg { color: var(--ink); }
+  /* the long-press card: a large stone in a platinum setting */
+  .lift { background: radial-gradient(60% 40% at 18% 0%, rgba(var(--c), .3), transparent 70%), radial-gradient(40% 30% at 85% 8%, rgba(255, 255, 255, var(--lift-glint)), transparent 70%), var(--ui-bg); box-shadow: 0 0 0 3px var(--set-2), 0 0 0 5px var(--set-1), 0 0 50px -10px rgba(var(--c), .6), 0 40px 80px -20px var(--tray-shadow); }
+  .lift.s-needs { box-shadow: 0 0 0 3px rgb(var(--cd-wait)), 0 0 0 5px rgb(var(--c-wait)), 0 0 60px -6px rgba(var(--c-wait), .75), 0 40px 80px -20px var(--tray-shadow); }
+  .lift > .glow { display: none; }
+  .lift-head .chip { color: #fff; background: radial-gradient(70% 70% at 35% 30%, rgb(var(--c)), rgb(var(--cd))); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 0 0 2px var(--set-1); }
+  .lift-go { color: #fff; background: linear-gradient(150deg, color-mix(in oklab, rgb(var(--cd)) 80%, rgb(var(--c))), rgb(var(--cd))); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), 0 0 0 2px var(--set-1); }
+}
+:root[data-material="crystal"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+  .key::before { background: radial-gradient(120% 90% at 30% 20%, rgba(var(--c), .35), rgba(var(--c), .7) 70%), var(--gem-base); }
+  .key::after { mix-blend-mode: soft-light; opacity: .75; }
+  .glow { opacity: .75; }
+  .chip { color: color-mix(in oklab, rgb(var(--cd)) 85%, #000); background: rgba(255, 255, 255, .62); box-shadow: inset 0 0 0 1px rgba(var(--cd), .35); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 80%, #000); }
+  .tool { background: rgba(0, 0, 0, .07); }
+  .lift-head .chip { color: #fff; }
+}
+@keyframes crystal-twinkle { 0%, 100% { opacity: .7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }

@@ -1,0 +1,38 @@
+/* Palette: gel-light, material gel. Candy gel on a white table. */
+:root[data-theme="gel-light"] {
+  --page-bg: #f5f4f2;
+  --room-1: #ffffff;
+  --room-2: #ebe9e6;
+  --lift-gloss: .7;
+  --drop-a: .55;
+  --halo-a: .78;
+  --frost-1: #fbfbfa;
+  --idle-gloss: .45;
+  --frost-2: #e7e6e3;
+  --frost-rim: rgba(255, 255, 255, .9);
+  --frost-skirt: #d3d1cd;
+  --frost-drop: rgba(60, 54, 46, .3);
+  --frost-chip: rgba(0, 0, 0, .06);
+  --dent: #e9e7e4;
+  --dent-shade: rgba(60, 54, 46, .18);
+  --milk-1: #ffffff;
+  --milk-2: #eceef1;
+  --milk-skirt: #cfd2d8;
+  --milk-ink: #15171c;
+  --milk-ink-2: rgba(21, 23, 28, .68);
+  --milk-track: rgba(21, 23, 28, .1);
+  --ink: #15171c;
+  --soft-1: rgba(21, 23, 28, .76);
+  --soft-2: rgba(21, 23, 28, .7);
+  --soft-3: rgba(21, 23, 28, .6);
+  --ui-bg: #fcfbfa;
+  --ui-ink: #15171c;
+  --ui-ink-2: rgba(21, 23, 28, .62);
+  --ui-hair: rgba(21, 23, 28, .08);
+  --ui-accent: #1d4ed8;
+  --ui-on-accent: #ffffff;
+  --scrim: rgba(30, 28, 26, .3);
+  --focus: #1d4ed8;
+  --sent-bg: rgba(21, 23, 28, .78);
+  --sent-ink: #fcfbfa;
+}

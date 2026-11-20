@@ -1,0 +1,45 @@
+/* Palette: crystal-light, material crystal. Pale stones in polished platinum on a white satin tray. */
+:root[data-theme="crystal-light"] {
+  --page-bg: #f1f0ee;
+  --room-1: #fdfcfb;
+  --room-2: #e4e2df;
+  --tray-1: #fbfaf9;
+  --tray-2: #eceae7;
+  --tray-hi: rgba(255, 255, 255, .95);
+  --tray-line: rgba(40, 36, 30, .06);
+  --tray-shadow: rgba(60, 52, 40, .35);
+  --bezel: linear-gradient(145deg, #ffffff, #c9ccd3 30%, #f2f3f6 50%, #9da2ac 75%, #e6e8ec);
+  --bezel-idle: linear-gradient(145deg, #eeeeef, #c6c8cd);
+  --set-1: #f4f5f7;
+  --set-2: #a7acb5;
+  --gem-base: #ffffff;
+  --quartz-1: #f6f6f8;
+  --quartz-2: #dfe0e4;
+  --acct-face-1: #f7f7f8;
+  --acct-face-2: #e2e2e5;
+  --key-shadow: rgba(50, 44, 36, .35);
+  --halo-a: .55;
+  --lift-glint: .9;
+  --chip-ink-n: #ffffff;
+  --chip-bg-n: #4b505a;
+  --idle-chip: rgba(0, 0, 0, .05);
+  --hole: #e3e1dd;
+  --hole-shade: rgba(60, 52, 40, .25);
+  --bar-track: rgba(30, 30, 40, .1);
+  --tool-a: .7;
+  --ink: #17130f;
+  --ink-shadow: 0 1px 0 rgba(255, 255, 255, .45);
+  --soft-1: rgba(23, 19, 15, .76);
+  --soft-2: rgba(23, 19, 15, .7);
+  --soft-3: rgba(23, 19, 15, .55);
+  --ui-bg: #fbfaf9;
+  --ui-ink: #17130f;
+  --ui-ink-2: rgba(23, 19, 15, .62);
+  --ui-hair: rgba(23, 19, 15, .08);
+  --ui-accent: #2a2d33;
+  --ui-on-accent: #ffffff;
+  --scrim: rgba(30, 28, 26, .3);
+  --focus: #b45309;
+  --sent-bg: rgba(23, 19, 15, .78);
+  --sent-ink: #fbfaf9;
+}

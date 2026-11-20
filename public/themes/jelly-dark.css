@@ -1,0 +1,41 @@
+/* Palette: jelly-dark, material jelly. Deep candy on a black mat. */
+:root[data-theme="jelly-dark"] {
+  --page-bg: #09090c;
+  --room-1: #1c1c22;
+  --room-2: #050507;
+  --jelly-base: #050508;
+  --gloss-1: .55;
+  --gloss-2: .7;
+  --idle-1: #3a3a40;
+  --idle-2: #1a1a1e;
+  --idle-line: rgba(255, 255, 255, .12);
+  --idle-shadow: 0 8px 14px -8px rgba(0, 0, 0, .5);
+  --idle-chip: rgba(255, 255, 255, .05);
+  --acct-1: #34343a;
+  --acct-2: #1d1d21;
+  --dent: #101013;
+  --dent-shade: rgba(0, 0, 0, .7);
+  --chip-bg: rgba(0, 0, 0, .35);
+  --chip-ink-n: #e9ecf2;
+  --chip-bg-n: rgba(255, 255, 255, .12);
+  --bar-track: rgba(255, 255, 255, .12);
+  --tool-a: .16;
+  --lift-gloss: .1;
+  --lift-drop: rgba(0, 0, 0, .9);
+  --halo-a: .5;
+  --ink: #ffffff;
+  --ink-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+  --soft-1: rgba(255, 255, 255, .8);
+  --soft-2: rgba(255, 255, 255, .72);
+  --soft-3: rgba(255, 255, 255, .5);
+  --ui-bg: #17171b;
+  --ui-ink: #f4f4f6;
+  --ui-ink-2: rgba(255, 255, 255, .6);
+  --ui-hair: rgba(255, 255, 255, .09);
+  --ui-accent: #e9ecf2;
+  --ui-on-accent: #101114;
+  --scrim: rgba(0, 0, 0, .6);
+  --focus: #ffd56a;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}

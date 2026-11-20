@@ -1,0 +1,45 @@
+/* Palette: aurora-dark, material aurora. Smoked glass in a dark room, curtains at full glow. */
+:root[data-theme="aurora-dark"] {
+  --page-bg: #05070b;
+  --room-1: #141a24;
+  --room-2: #04060a;
+  --glass-1: #0d1119;
+  --glass-2: #070a10;
+  --glass-hi: rgba(255, 255, 255, .1);
+  --glass-line: rgba(255, 255, 255, .07);
+  --glass-drop: rgba(0, 0, 0, .8);
+  --frost-a: .14;
+  --curtain-a: 1;
+  --curtain-b-a: .55;
+  --glass-edge-hi: rgba(255, 255, 255, .14);
+  --glass-edge-line: rgba(255, 255, 255, .06);
+  --glass-edge-a: .1;
+  --idle-1: #1b1f27;
+  --idle-2: #11141a;
+  --idle-chip: rgba(255, 255, 255, .07);
+  --acct-1: #141820;
+  --acct-2: #0b0e14;
+  --acct-chip-ink: #f1f4f9;
+  --acct-chip-bg: rgba(255, 255, 255, .12);
+  --hole: #0a0c11;
+  --hole-shade: rgba(0, 0, 0, .8);
+  --bar-track: rgba(255, 255, 255, .14);
+  --chip-bg: rgba(0, 0, 0, .42);
+  --ink: #ffffff;
+  --ink-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+  --soft-1: rgba(255, 255, 255, .86);
+  --soft-2: rgba(255, 255, 255, .66);
+  --soft-3: rgba(255, 255, 255, .52);
+  --fdots-ring: rgba(255, 255, 255, .7);
+  --tool-bg: rgba(255, 255, 255, .1);
+  --ui-bg: #12161d;
+  --ui-ink: #f2f5fa;
+  --ui-ink-2: rgba(255, 255, 255, .6);
+  --ui-hair: rgba(255, 255, 255, .09);
+  --ui-accent: #a9c8f5;
+  --ui-on-accent: #07101d;
+  --scrim: rgba(0, 0, 0, .62);
+  --focus: #ffd56a;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}

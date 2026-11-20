@@ -1,0 +1,40 @@
+/* Palette: liquid-dark, material liquid. Deep pools in a dark mercury rim. */
+:root[data-theme="liquid-dark"] {
+  --page-bg: #050506;
+  --room-1: #15161a;
+  --room-2: #040405;
+  --rim: url("../../assets/themes/liquid-rim-dark-9slice.webp");
+  --rim-wait: url("../../assets/themes/liquid-rim-gold-9slice.webp");
+  --rim-shadow: rgba(0, 0, 0, .7);
+  --pool-shade-a: .7;
+  --pool-rim-a: .15;
+  --pool-idle: #1a1a1e;
+  --pool-acct: radial-gradient(120% 90% at 40% 25%, #2a2b31, #16161a);
+  --metal-1: #3a3d44;
+  --metal-2: #1d1f23;
+  --lift-rim: #3d414a;
+  --idle-chip: rgba(255, 255, 255, .08);
+  --acct-chip-ink: #eef1f6;
+  --acct-chip-bg: rgba(255, 255, 255, .12);
+  --hole: #0a0a0d;
+  --hole-shade: rgba(0, 0, 0, .8);
+  --bar-track: rgba(255, 255, 255, .14);
+  --chip-bg: rgba(0, 0, 0, .45);
+  --ink: #ffffff;
+  --ink-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+  --soft-1: rgba(255, 255, 255, .86);
+  --soft-2: rgba(255, 255, 255, .66);
+  --soft-3: rgba(255, 255, 255, .52);
+  --fdots-ring: rgba(255, 255, 255, .7);
+  --tool-bg: rgba(255, 255, 255, .1);
+  --ui-bg: #141417;
+  --ui-ink: #f2f2f4;
+  --ui-ink-2: rgba(255, 255, 255, .6);
+  --ui-hair: rgba(255, 255, 255, .09);
+  --ui-accent: #cfd6e0;
+  --ui-on-accent: #0e1013;
+  --scrim: rgba(0, 0, 0, .62);
+  --focus: #ffd56a;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}

@@ -1,0 +1,82 @@
+/* Material: chrome. Each key is a mirror-polished, anodized metal cap: a sky-horizon-ground reflection with a hard
+   horizon line, bevelled edges and a white specular streak, the metal tinted in the state colour's own tones.
+   Idle keys are brushed, unpolished steel. A waiting key is polished gold, ringed and haloed, and the only
+   one whose streak travels. Palettes: chrome-light, chrome-dark. */
+:root[data-material="chrome"] {
+  --key-radius: 24px;
+  --deck-pad: 24px;
+  --t: var(--tint);
+  .root { background: radial-gradient(90% 80% at 50% 10%, var(--room-1), var(--room-2)); color: var(--ink); }
+  /* the chassis: machined, brushed aluminium */
+  .deck { border-radius: 42px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 3px), linear-gradient(180deg, var(--chassis-1), var(--chassis-2)); box-shadow: inset 0 1px 0 var(--chassis-hi), inset 0 -2px 0 var(--chassis-lo), 0 30px 70px -30px var(--chassis-shadow); }
+  .well { padding: 3px 3px 7px; border-radius: calc(var(--key-radius) + 3px); background: linear-gradient(180deg, var(--socket-1), var(--socket-2)); box-shadow: inset 0 2px 5px var(--socket-shade); }
+  .key {
+    background:
+      linear-gradient(180deg,
+        color-mix(in oklab, rgb(var(--c)) var(--t), var(--sky-1)) 0%,
+        color-mix(in oklab, rgb(var(--c)) var(--t), var(--sky-2)) 29%,
+        color-mix(in oklab, rgb(var(--cd)) var(--t), var(--horizon)) 29.6%,
+        color-mix(in oklab, rgb(var(--cd)) var(--t), var(--ground-1)) 32%,
+        color-mix(in oklab, rgb(var(--c)) var(--t), var(--ground-2)) 58%,
+        color-mix(in oklab, rgb(var(--c)) var(--t), var(--ground-3)) 100%);
+    box-shadow:
+      inset 0 2px 0 var(--bevel-hi), inset 0 -2px 0 var(--bevel-lo), inset 2px 0 0 var(--bevel-side), inset -2px 0 0 var(--bevel-side),
+      inset 0 0 0 1px var(--edge),
+      0 4px 0 color-mix(in oklab, rgb(var(--cd)) var(--t), var(--skirt)), 0 10px 18px -8px var(--chassis-shadow);
+  }
+  .key:active:not(:disabled) { transform: translateY(3px); box-shadow: inset 0 2px 0 var(--bevel-hi), inset 0 -2px 0 var(--bevel-lo), inset 0 0 0 1px var(--edge), 0 1px 0 color-mix(in oklab, rgb(var(--cd)) var(--t), var(--skirt)); }
+  /* the specular streak: a hard white band across the polish */
+  .glow { z-index: 1; top: -30%; bottom: -30%; left: 8%; width: 22%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, var(--streak-a)) 30%, rgba(255, 255, 255, var(--streak-a)) 55%, transparent 56%, transparent 70%, rgba(255, 255, 255, calc(var(--streak-a) * .6)) 72%, transparent 80%); transform: rotate(22deg); mix-blend-mode: var(--streak-blend); }
+  /* a second, softer reflection: the edge of the room on the dome */
+  .key::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; background: radial-gradient(120% 60% at 50% -10%, rgba(255, 255, 255, var(--dome-a)), transparent 55%); }
+  .grain { mix-blend-mode: overlay; opacity: .06; }
+  .mark { display: none; }
+  /* waiting: polished gold, a lit ring and a halo that stay when motion is off; the streak travels */
+  .s-needs { --t: var(--tint-wait); }
+  .s-needs.well { background: linear-gradient(180deg, rgb(var(--c-wait)), rgb(var(--cd-wait))); box-shadow: 0 0 0 2px rgba(var(--c-wait), .5), 0 0 36px -2px rgba(var(--c-wait), .8); }
+  .s-needs .glow { animation: chrome-streak 2.8s cubic-bezier(.5, 0, .3, 1) infinite; }
+  /* the enamel inlay: the chip is a glossy bead of the state colour set into the metal */
+  .chip { color: #fff; background: radial-gradient(80% 80% at 35% 25%, color-mix(in oklab, rgb(var(--c)) 80%, #fff), rgb(var(--cd)) 75%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), inset 0 -2px 3px rgba(0, 0, 0, .25), 0 0 0 2px var(--bezel), 0 2px 4px rgba(0, 0, 0, .3); }
+  .time { color: var(--soft-1); }
+  .extra { color: #fff; background: rgb(var(--cd)); }
+  .label { color: color-mix(in oklab, rgb(var(--c)) 10%, #fff); }
+  .name { color: var(--ink); font-size: 17.5px; text-shadow: var(--ink-shadow); }
+  .task { color: var(--soft-1); }
+  /* idle: brushed steel, no polish, no tint, no streak */
+  .s-idle .key { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 2px, rgba(0, 0, 0, .03) 2px 3px), linear-gradient(180deg, var(--brushed-1), var(--brushed-2)); box-shadow: inset 0 1px 0 var(--bevel-hi), inset 0 0 0 1px var(--edge), 0 3px 0 var(--skirt), 0 8px 14px -8px var(--chassis-shadow); }
+  .s-idle .glow, .s-idle .key::before { opacity: 0; }
+  .s-idle .chip { color: var(--soft-3); background: var(--idle-chip); box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2); }
+  .s-idle .label, .s-idle .time, .s-idle .task { color: var(--soft-3); }
+  .s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: a bare socket */
+  .s-empty.key { background: var(--socket-2); box-shadow: inset 0 2px 6px var(--socket-shade); }
+  .s-empty.well { opacity: .7; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts: untinted mirror chrome */
+  .acct { --t: 0%; }
+  .acct.key { background: linear-gradient(180deg, var(--acct-1), var(--acct-2)); }
+  .acct .chip { background: radial-gradient(80% 80% at 35% 25%, #8b919c, #3b3f47 75%); }
+  .acct .label { color: var(--soft-1); }
+  .acct .mn, .acct .mv { color: var(--ink); }
+  .acct .mr { color: var(--soft-1); opacity: 1; }
+  .bar { background: var(--bar-track); box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25); }
+  .t-ok { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-work)) 70%, #fff), rgb(var(--cd-work))); }
+  .t-warn { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-wait)) 70%, #fff), rgb(var(--cd-wait))); }
+  .t-bad { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-stall)) 70%, #fff), rgb(var(--cd-stall))); }
+  .count { color: #fff; background: rgb(var(--cd)); }
+  .fdots i { box-shadow: 0 0 0 1.5px var(--bezel); }
+  .well.folder::before, .well.folder::after { background: linear-gradient(180deg, var(--sky-1), var(--ground-1)); box-shadow: inset 0 0 0 1px var(--edge); }
+  .tool { color: var(--ink); background: var(--tool-bg); }
+  /* the long-press card: a brushed metal plate with a polished bevel; the button is an enamel bar */
+  .lift { background: radial-gradient(70% 40% at 20% 0%, rgba(var(--c), .22), transparent 70%), repeating-linear-gradient(90deg, rgba(255, 255, 255, .02) 0 1px, transparent 1px 3px), var(--ui-bg); box-shadow: inset 0 2px 0 var(--bevel-hi), inset 0 -2px 0 var(--bevel-lo), inset 0 0 0 1px var(--edge), 0 0 0 4px color-mix(in oklab, rgb(var(--c)) var(--tint), var(--sky-2)), 0 0 50px -10px rgba(var(--c), .55), 0 40px 80px -20px var(--chassis-shadow); }
+  .lift > .glow { display: none; }
+  .lift-head .chip { color: #fff; background: radial-gradient(80% 80% at 35% 25%, color-mix(in oklab, rgb(var(--c)) 80%, #fff), rgb(var(--cd)) 75%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 0 0 2px var(--bezel); }
+  .lift-go { color: #fff; background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--cd)) 78%, rgb(var(--c))), rgb(var(--cd)) 60%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), inset 0 -2px 0 rgba(0, 0, 0, .25), 0 0 0 2px var(--bezel), 0 6px 14px -6px rgba(var(--cd), .7); }
+  .back.key { background: linear-gradient(180deg, var(--brushed-1), var(--brushed-2)); }
+  .back .face svg { color: var(--ink); }
+}
+:root[data-material="chrome"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 58%, #000); }
+}
+@keyframes chrome-streak { 0% { transform: translateX(-120%) rotate(22deg); } 60%, 100% { transform: translateX(480%) rotate(22deg); } }

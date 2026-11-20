@@ -1,0 +1,79 @@
+/* Material: gel. Each key is a thick, glossy candy-gel button: a saturated body in the state colour, a big white
+   gloss cap on top, light gathering at the bottom where the gel is thickest, and a coloured shadow under it.
+   Idle keys are frosted clear gel. A waiting key wears a white rim and a halo, and is the only one that wobbles
+   like jelly. Palettes: gel-light, gel-dark. */
+:root[data-material="gel"] {
+  --key-radius: 32px;
+  --deck-pad: 0px;
+  .root { background: radial-gradient(90% 80% at 50% 15%, var(--room-1), var(--room-2)); color: var(--ink); }
+  .well { padding-bottom: 8px; }
+  .key {
+    background:
+      radial-gradient(70% 45% at 50% 108%, color-mix(in oklab, rgb(var(--c)) 45%, #fff), transparent 70%),
+      radial-gradient(120% 100% at 50% 0%, color-mix(in oklab, rgb(var(--c)) 88%, #fff), rgb(var(--c)) 45%, color-mix(in oklab, rgb(var(--c)) 70%, rgb(var(--cd))) 100%);
+    box-shadow:
+      inset 0 0 0 1.5px rgba(255, 255, 255, .35),
+      inset 0 -6px 14px -4px color-mix(in oklab, rgb(var(--c)) 40%, #fff),
+      inset 0 10px 18px -10px rgba(var(--cd), .5),
+      0 6px 0 color-mix(in oklab, rgb(var(--cd)) 80%, rgb(var(--c))),
+      0 16px 26px -10px rgba(var(--cd), var(--drop-a));
+  }
+  .key:active:not(:disabled) { transform: translateY(4px) scale(.985, .97); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .35), inset 0 -6px 14px -4px color-mix(in oklab, rgb(var(--c)) 40%, #fff), 0 2px 0 color-mix(in oklab, rgb(var(--cd)) 80%, rgb(var(--c))), 0 6px 12px -6px rgba(var(--cd), var(--drop-a)); }
+  /* the gloss cap: a separate glassy highlight over the top half */
+  .key::before { content: ""; position: absolute; z-index: 1; left: 7px; right: 7px; top: 5px; height: 44%; border-radius: calc(var(--key-radius) - 6px) calc(var(--key-radius) - 6px) 50% 50% / calc(var(--key-radius) - 6px) calc(var(--key-radius) - 6px) 34% 34%; background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .28) 85%, rgba(255, 255, 255, .1)); pointer-events: none; }
+  /* a tiny hard sparkle on the gloss */
+  .key::after { content: ""; position: absolute; z-index: 1; right: 38%; top: 9%; width: 12px; height: 6px; border-radius: 50%; background: #fff; transform: rotate(-18deg); pointer-events: none; }
+  .glow { inset: auto 10% -30% 10%; height: 55%; background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, .55), transparent 70%); filter: blur(8px); }
+  .grain { opacity: 0; }
+  .mark { display: none; }
+  /* waiting: a white rim and a halo stay when motion is off; the gel wobbles */
+  .s-needs.well .key { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .35), inset 0 -6px 14px -4px color-mix(in oklab, rgb(var(--c)) 40%, #fff), 0 0 0 4px #fff, 0 0 0 7px rgba(var(--c), .9), 0 6px 0 7px color-mix(in oklab, rgb(var(--cd)) 60%, rgb(var(--c))), 0 0 64px 12px rgba(var(--c), var(--halo-a)); }
+  .s-needs.well { animation: gel-wobble 1.9s cubic-bezier(.3, 0, .3, 1) infinite; transform-origin: 50% 100%; }
+  .s-needs .glow { animation: gel-pulse 1.9s ease-in-out infinite; }
+  /* face: dark ink on bright gel, in both schemes */
+  .chip { color: rgb(var(--cd)); background: rgba(255, 255, 255, .78); box-shadow: inset 0 -2px 3px rgba(var(--cd), .2), 0 2px 4px rgba(var(--cd), .3); }
+  .time { color: color-mix(in oklab, rgb(var(--cd)) 50%, #0c0c10); }
+  .extra { color: #fff; background: rgb(var(--cd)); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 38%, #0c0c10); }
+  .name { color: color-mix(in oklab, rgb(var(--cd)) 25%, #0c0c10); font-size: 17.5px; text-shadow: 0 1px 0 rgba(255, 255, 255, .35); }
+  .task { color: color-mix(in oklab, rgb(var(--cd)) 45%, #0c0c10); }
+  /* idle: frosted clear gel, nothing coloured in it */
+  .s-idle .key { background: linear-gradient(180deg, var(--frost-1), var(--frost-2)); box-shadow: inset 0 0 0 1.5px var(--frost-rim), 0 4px 0 var(--frost-skirt), 0 10px 18px -10px var(--frost-drop); }
+  .s-idle .key::before { opacity: var(--idle-gloss); }
+  .s-idle .key::after, .s-idle .glow { opacity: 0; }
+  .s-idle .chip { color: var(--soft-3); background: var(--frost-chip); box-shadow: none; }
+  .s-idle .time, .s-idle .task { color: var(--soft-3); }
+  .s-idle .label { color: var(--soft-2); }
+  .s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: a soft dent */
+  .s-empty.key { background: var(--dent); box-shadow: inset 0 3px 8px var(--dent-shade); }
+  .s-empty.key::before, .s-empty.key::after { display: none; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts: milky white gel */
+  .acct.key { background: linear-gradient(180deg, var(--milk-1), var(--milk-2)); box-shadow: inset 0 0 0 1.5px var(--frost-rim), 0 5px 0 var(--milk-skirt), 0 14px 22px -10px var(--frost-drop); }
+  .acct .chip { color: #fff; background: #3b3f48; }
+  .acct .label, .acct .mr { color: var(--milk-ink-2); opacity: 1; }
+  .acct .name, .acct .mn, .acct .mv { color: var(--milk-ink); text-shadow: none; }
+  .bar { height: 6px; border-radius: 3px; background: var(--milk-track); }
+  .fill { border-radius: 3px; }
+  .t-ok { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-work)) 60%, #fff), rgb(var(--c-work))); }
+  .t-warn { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-wait)) 60%, #fff), rgb(var(--c-wait))); }
+  .t-bad { background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c-stall)) 60%, #fff), rgb(var(--c-stall))); }
+  .count { color: #fff; background: rgb(var(--cd)); }
+  .fdots i { box-shadow: 0 0 0 2px rgba(255, 255, 255, .85); }
+  .well.folder::before, .well.folder::after { background: color-mix(in oklab, rgb(var(--c)) 55%, #fff); }
+  .tool { color: rgb(var(--cd)); background: rgba(255, 255, 255, .6); }
+  /* the long-press card: a slab of milky gel with a gloss cap; the button is a small candy of the state colour */
+  .lift { background: linear-gradient(180deg, rgba(255, 255, 255, var(--lift-gloss)), transparent 22%), radial-gradient(80% 50% at 50% 0%, rgba(var(--c), .22), transparent 70%), var(--ui-bg); box-shadow: inset 0 0 0 1.5px var(--frost-rim), 0 0 0 4px rgba(var(--c), .55), 0 0 60px -6px rgba(var(--c), .6), 0 40px 80px -20px var(--frost-drop); }
+  .lift > .glow { display: none; }
+  .lift-head .chip { color: rgb(var(--cd)); background: radial-gradient(120% 100% at 50% 0%, color-mix(in oklab, rgb(var(--c)) 70%, #fff), rgb(var(--c))); box-shadow: inset 0 -2px 4px rgba(var(--cd), .3); }
+  .lift-go { color: color-mix(in oklab, rgb(var(--cd)) 25%, #0c0c10); background: linear-gradient(180deg, color-mix(in oklab, rgb(var(--c)) 55%, #fff), rgb(var(--c)) 55%); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .4), 0 4px 0 color-mix(in oklab, rgb(var(--cd)) 80%, rgb(var(--c))), 0 10px 18px -8px rgba(var(--cd), .6); }
+  .lift-go:active { transform: translateY(3px); }
+  .back.key { background: linear-gradient(180deg, var(--frost-1), var(--frost-2)); box-shadow: inset 0 0 0 1.5px var(--frost-rim), 0 4px 0 var(--frost-skirt); }
+  .back .face svg, .back .name { color: var(--ink); }
+}
+:root[data-material="gel"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+}
+@keyframes gel-wobble { 0%, 100% { transform: scale(1, 1); } 18% { transform: scale(1.035, .965); } 36% { transform: scale(.975, 1.03); } 54% { transform: scale(1.012, .99); } 70% { transform: scale(1, 1); } }
+@keyframes gel-pulse { 0%, 100% { opacity: .6; } 30% { opacity: 1; } }

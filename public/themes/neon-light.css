@@ -1,0 +1,41 @@
+/* Palette: neon-light, material neon. White glass plates with lit tubes. */
+:root[data-theme="neon-light"] {
+  --page-bg: #e9ebef;
+  --room-1: #f7f8fa;
+  --room-2: #dde0e6;
+  --case: linear-gradient(180deg, #fdfdfe, #eceef2);
+  --key-shadow: rgba(20, 24, 32, .42);
+  --tube-off: rgba(0, 0, 0, .13);
+  --core: rgba(255, 255, 255, .9);
+  --core-off: rgba(255, 255, 255, .5);
+  --tube-acct: #bcc1ca;
+  --core-acct: rgba(255, 255, 255, .7);
+  --gloss-a: .8;
+  --haze-a: .18;
+  --gloss-off: .55;
+  --chip-bg: rgba(255, 255, 255, .55);
+  --idle-chip: rgba(0, 0, 0, .05);
+  --idle-line: rgba(0, 0, 0, .08);
+  --chip-ink-n: #ffffff;
+  --chip-bg-n: #4b505a;
+  --hole: #e1e3e8;
+  --hole-shade: rgba(20, 24, 32, .2);
+  --bar-track: rgba(20, 20, 30, .1);
+  --tool-a: .7;
+  --halo-a: .5;
+  --ink: #15151a;
+  --ink-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+  --soft-1: rgba(21, 21, 26, .76);
+  --soft-2: rgba(21, 21, 26, .7);
+  --soft-3: rgba(21, 21, 26, .55);
+  --ui-bg: #fbfafc;
+  --ui-ink: #16161c;
+  --ui-ink-2: rgba(22, 22, 28, .62);
+  --ui-hair: rgba(22, 22, 28, .08);
+  --ui-accent: #2a2d33;
+  --ui-on-accent: #ffffff;
+  --scrim: rgba(24, 24, 32, .3);
+  --focus: #b45309;
+  --sent-bg: rgba(22, 22, 28, .78);
+  --sent-ink: #fbfafc;
+}

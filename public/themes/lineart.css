@@ -1,0 +1,26 @@
+/* Palette: lineart (light), material ink. One thin ink line on warm paper, flat muted colour used sparingly,
+   after github.com/JDhruv14/line-art-animation (references/style.md: ink #1c1c1c, paper #fdfcf8). */
+:root[data-theme="lineart"] {
+  --page-bg: #fbf9f3;
+  --paper: #fdfcf8;
+  --paper-key: #fefdfa;
+  --pen: #1c1c1c;
+  --pen-soft: rgba(28, 28, 28, .42);
+  --pen-faint: rgba(28, 28, 28, .16);
+  --ink: #1c1c1c;
+  --ink-2: #55534e;
+  --ink-3: #6b6862;
+  --meter-warn: #c98a1e;
+  --meter-bad: #b9472f;
+  /* shared UI */
+  --ui-bg: #fdfcf8;
+  --ui-ink: #1c1c1c;
+  --ui-ink-2: #6b6862;
+  --ui-hair: rgba(28, 28, 28, .08);
+  --ui-accent: #1c1c1c;
+  --ui-on-accent: #fdfcf8;
+  --scrim: rgba(40, 36, 30, .22);
+  --focus: #1d4ed8;
+  --sent-bg: rgba(28, 28, 28, .82);
+  --sent-ink: #fdfcf8;
+}

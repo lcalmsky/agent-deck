@@ -1,0 +1,41 @@
+/* Palette: led-dark, material led. A dark dot-matrix panel with the LEDs glowing. */
+:root[data-theme="led-dark"] {
+  --page-bg: #030305;
+  --room-1: #101116;
+  --room-2: #020203;
+  --panel-1: #0a0a0e;
+  --panel-2: #030306;
+  --panel-line: rgba(255, 255, 255, .06);
+  --panel-shade: rgba(0, 0, 0, .6);
+  --panel-drop: rgba(0, 0, 0, .85);
+  --grid-dot: rgba(255, 255, 255, .08);
+  --idle-1: #141519;
+  --idle-2: #0b0c0f;
+  --idle-chip: rgba(255, 255, 255, .07);
+  --acct-1: #101116;
+  --acct-2: #08090c;
+  --acct-chip-ink: #eef1f6;
+  --acct-chip-bg: rgba(255, 255, 255, .12);
+  --hole: #08080b;
+  --hole-shade: rgba(0, 0, 0, .8);
+  --lift-grid: rgba(255, 255, 255, .05);
+  --bar-track: rgba(255, 255, 255, .14);
+  --chip-bg: rgba(0, 0, 0, .45);
+  --ink: #ffffff;
+  --ink-shadow: 0 0 6px #000, 0 0 2px #000;
+  --soft-1: rgba(255, 255, 255, .86);
+  --soft-2: rgba(255, 255, 255, .64);
+  --soft-3: rgba(255, 255, 255, .5);
+  --fdots-ring: rgba(255, 255, 255, .7);
+  --tool-bg: rgba(255, 255, 255, .1);
+  --ui-bg: #101116;
+  --ui-ink: #f2f4f8;
+  --ui-ink-2: rgba(255, 255, 255, .6);
+  --ui-hair: rgba(255, 255, 255, .09);
+  --ui-accent: #7fb2ff;
+  --ui-on-accent: #061120;
+  --scrim: rgba(0, 0, 0, .62);
+  --focus: #ffd56a;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}

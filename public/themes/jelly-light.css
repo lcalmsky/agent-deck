@@ -1,0 +1,41 @@
+/* Palette: jelly-light, material jelly. Pale candy on a white mat. */
+:root[data-theme="jelly-light"] {
+  --page-bg: #f5f4f2;
+  --room-1: #ffffff;
+  --room-2: #e8e6e3;
+  --jelly-base: #ffffff;
+  --gloss-1: .95;
+  --gloss-2: .9;
+  --idle-1: #fafafb;
+  --idle-2: #dcdde1;
+  --idle-line: rgba(255, 255, 255, .5);
+  --idle-shadow: 0 8px 14px -8px rgba(0, 0, 0, .35);
+  --idle-chip: rgba(0, 0, 0, .05);
+  --acct-1: #ffffff;
+  --acct-2: #eceef1;
+  --dent: #e2e3e7;
+  --dent-shade: rgba(20, 20, 30, .22);
+  --chip-bg: rgba(255, 255, 255, .62);
+  --chip-ink-n: #ffffff;
+  --chip-bg-n: #4b505a;
+  --bar-track: rgba(30, 30, 40, .12);
+  --tool-a: .7;
+  --lift-gloss: .55;
+  --lift-drop: rgba(60, 52, 40, .4);
+  --halo-a: .55;
+  --ink: #15151a;
+  --ink-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+  --soft-1: rgba(21, 21, 26, .76);
+  --soft-2: rgba(21, 21, 26, .7);
+  --soft-3: rgba(21, 21, 26, .55);
+  --ui-bg: #fbfaf9;
+  --ui-ink: #17130f;
+  --ui-ink-2: rgba(23, 19, 15, .62);
+  --ui-hair: rgba(23, 19, 15, .08);
+  --ui-accent: #2a2d33;
+  --ui-on-accent: #ffffff;
+  --scrim: rgba(30, 28, 26, .3);
+  --focus: #b45309;
+  --sent-bg: rgba(23, 19, 15, .78);
+  --sent-ink: #fbfaf9;
+}

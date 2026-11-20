@@ -1,0 +1,87 @@
+/* Material: aurora. Each key is a pane of frosted glass with a curtain of state-coloured aurora drifting inside:
+   a bright ribbon on .glow, a paler mirrored ribbon on ::before, both cut by the baked mask, a glass edge and a cool
+   frost gathering at the bottom. Idle keys are clear glass with the curtains switched off. A waiting key keeps the
+   curtain and is the only one whose ribbons drift. Palettes: aurora-light, aurora-dark. */
+:root[data-material="aurora"] {
+  --key-radius: 24px;
+  .root { background: radial-gradient(90% 80% at 50% 12%, var(--room-1), var(--room-2)); color: var(--ink); }
+  .key {
+    background:
+      radial-gradient(120% 60% at 50% 108%, rgba(var(--c), var(--frost-a)), transparent 68%),
+      linear-gradient(180deg, var(--glass-1), var(--glass-2));
+    box-shadow: inset 0 1px 0 var(--glass-hi), inset 0 0 0 1px var(--glass-line), 0 12px 24px -14px var(--glass-drop);
+  }
+  .key:active:not(:disabled) { transform: scale(.98); box-shadow: inset 0 1px 0 var(--glass-hi), inset 0 0 0 1px var(--glass-line), 0 4px 10px -8px var(--glass-drop); }
+  /* the curtain: ribbons of state light cut out of one baked alpha mask, brightest where they brush the glass edge */
+  .glow, .key::before {
+    position: absolute; inset: -24% -30% 12%; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, color-mix(in oklab, rgb(var(--c)) 70%, #fff), rgb(var(--c)), color-mix(in oklab, rgb(var(--c)) 60%, rgb(var(--cd))));
+    -webkit-mask: url("../../assets/themes/aurora-mask.webp") center / 100% 100% no-repeat;
+    mask: url("../../assets/themes/aurora-mask.webp") center / 100% 100% no-repeat;
+  }
+  .glow { opacity: var(--curtain-a); }
+  .key::before {
+    content: ""; border-radius: 0;
+    background: color-mix(in oklab, rgb(var(--c)) 55%, #fff);
+    opacity: var(--curtain-b-a);
+    transform: scaleX(-1) translateY(8%);
+  }
+  /* the glass edge: a bright top line and a faint sheen across the pane */
+  .key::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px 0 var(--glass-edge-hi), inset 0 0 0 1px var(--glass-edge-line); background: linear-gradient(165deg, rgba(255, 255, 255, var(--glass-edge-a)), transparent 35%); }
+  .grain { z-index: 1; opacity: .04; }
+  .mark { display: none; }
+  .chip { color: color-mix(in oklab, rgb(var(--cd)) 88%, #000); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--cd), .3); }
+  .time { color: var(--soft-1); }
+  .extra { color: #fff; background: rgb(var(--cd)); }
+  .label { color: color-mix(in oklab, rgb(var(--cd)) 80%, #000); }
+  .name { color: var(--ink); font-size: 17.5px; text-shadow: var(--ink-shadow); }
+  .task { color: var(--soft-1); }
+  /* waiting: a lit ring and a halo around the pane, and the ribbons start drifting */
+  .s-needs.well { border-radius: calc(var(--key-radius) + 3px); box-shadow: 0 0 0 2px rgba(var(--c), .45), 0 0 32px 0 rgba(var(--c), .5); }
+  .s-needs .glow { animation: aurora-drift 6s ease-in-out infinite alternate; }
+  .s-needs .key::before { animation: aurora-drift-b 7s ease-in-out infinite alternate; }
+  /* idle: clear glass, nothing lit inside */
+  .s-idle .key { background: linear-gradient(180deg, var(--idle-1), var(--idle-2)); box-shadow: inset 0 1px 0 var(--glass-hi), inset 0 0 0 1px var(--glass-line); }
+  .s-idle .glow, .s-idle .key::before { opacity: 0; }
+  .s-idle .chip { color: var(--soft-3); background: var(--idle-chip); box-shadow: none; }
+  .s-idle .label, .s-idle .time, .s-idle .task { color: var(--soft-3); }
+  .s-idle .name { color: var(--soft-2); text-shadow: none; }
+  /* empty: a recessed socket behind the glass */
+  .s-empty.key { background: var(--hole); box-shadow: inset 0 2px 6px var(--hole-shade); }
+  .s-empty.key::before, .s-empty.key::after, .s-empty .grain { display: none; }
+  .s-empty.well { opacity: .7; }
+  .slot { background: var(--soft-3); opacity: .5; }
+  /* accounts: neutral smoked glass, no curtain over the meters */
+  .acct.key { background: radial-gradient(120% 60% at 50% 108%, rgba(var(--c), var(--frost-a)), transparent 68%), linear-gradient(180deg, var(--acct-1), var(--acct-2)); }
+  .acct .glow, .acct.key::before { display: none; }
+  .acct .chip { color: var(--acct-chip-ink); background: var(--acct-chip-bg); box-shadow: none; }
+  .acct .label { color: var(--soft-1); }
+  .acct .mn, .acct .mv { color: var(--ink); }
+  .acct .mr { color: var(--soft-1); opacity: 1; }
+  .bar { background: var(--bar-track); }
+  .t-ok { background: rgb(var(--c-work)); box-shadow: 0 0 6px rgba(var(--c-work), .6); }
+  .t-warn { background: rgb(var(--c-wait)); box-shadow: 0 0 6px rgba(var(--c-wait), .6); }
+  .t-bad { background: rgb(var(--c-stall)); box-shadow: 0 0 6px rgba(var(--c-stall), .6); }
+  .fdots i { box-shadow: 0 0 0 1.5px var(--fdots-ring); }
+  .well.folder::before, .well.folder::after { background: linear-gradient(180deg, var(--glass-1), var(--glass-2)); box-shadow: inset 0 0 0 1px var(--glass-line); opacity: .9; }
+  .tool { color: var(--ink); background: var(--tool-bg); }
+  /* the long-press card: the same pane, larger, with the curtain only at the top edge */
+  .lift { background: radial-gradient(70% 45% at 20% 0%, rgba(var(--c), .28), transparent 70%), linear-gradient(180deg, var(--glass-1), var(--glass-2)); box-shadow: inset 0 1px 0 var(--glass-hi), inset 0 0 0 1px var(--glass-line), 0 0 0 3px rgba(var(--c), .3), 0 0 60px -12px rgba(var(--c), .55), 0 40px 80px -20px var(--glass-drop); }
+  .lift > .glow { display: none; }
+  .lift > .grain { opacity: .04; }
+  .lift-head .chip { color: color-mix(in oklab, rgb(var(--cd)) 88%, #000); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--cd), .3); }
+  .back.key { background: linear-gradient(180deg, var(--idle-1), var(--idle-2)); }
+  .back .face svg { color: var(--ink); }
+}
+:root[data-material="aurora"][data-scheme="dark"] {
+  .glow { filter: drop-shadow(0 0 6px rgba(var(--c), .9)); }
+  .key:not(.s-idle, .s-empty, .acct) .chip { color: rgb(var(--c)); background: var(--chip-bg); box-shadow: inset 0 0 0 1px rgba(var(--c), .5); }
+  .key:not(.s-idle, .s-empty, .acct) .extra { background: rgba(255, 255, 255, .16); }
+  .key:not(.s-idle, .s-empty, .acct) .label { color: color-mix(in oklab, rgb(var(--c)) 72%, #fff); }
+  .lift-head .chip { color: rgb(var(--c)); box-shadow: inset 0 0 0 1px rgba(var(--c), .5); }
+}
+:root[data-material="aurora"][data-scheme="light"] {
+  .lift { --lift-state: color-mix(in oklab, rgb(var(--cd)) 70%, #000); }
+}
+@keyframes aurora-drift { to { transform: translateX(14%); } }
+@keyframes aurora-drift-b { from { transform: scaleX(-1) translateY(8%); } to { transform: scaleX(-1) translate(12%, 4%); } }

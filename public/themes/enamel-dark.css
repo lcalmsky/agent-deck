@@ -1,0 +1,45 @@
+/* Palette: enamel-dark, material enamel. Silver wire and deep enamel under a dim light. */
+:root[data-theme="enamel-dark"] {
+  --page-bg: #08080b;
+  --room-1: #17171c;
+  --room-2: #050506;
+  --metal-1: #f4f6f8;
+  --metal-2: #a6acb6;
+  --metal-3: #e6e9ee;
+  --metal-4: #777d87;
+  --metal-5: #cfd4db;
+  --idle-metal-1: #3c3e44;
+  --idle-metal-2: #26282d;
+  --enamel-shade: rgba(0, 0, 0, .6);
+  --gloss-a: .3;
+  --gloss-acct-a: .28;
+  --sheen-a: .28;
+  --idle-enamel: linear-gradient(160deg, #26272c, #17171b);
+  --idle-chip: rgba(255, 255, 255, .08);
+  --acct-chip-ink: #eef1f6;
+  --acct-chip-bg: rgba(255, 255, 255, .12);
+  --key-drop: 0 10px 16px -10px rgba(0, 0, 0, .85);
+  --key-drop-ink: rgba(0, 0, 0, .85);
+  --hole: #0c0c0f;
+  --hole-shade: rgba(0, 0, 0, .8);
+  --lift-line: rgba(255, 255, 255, .1);
+  --bar-track: rgba(255, 255, 255, .14);
+  --chip-bg: rgba(0, 0, 0, .45);
+  --ink: #ffffff;
+  --ink-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+  --soft-1: rgba(255, 255, 255, .86);
+  --soft-2: rgba(255, 255, 255, .66);
+  --soft-3: rgba(255, 255, 255, .52);
+  --fdots-ring: rgba(255, 255, 255, .7);
+  --tool-bg: rgba(255, 255, 255, .1);
+  --ui-bg: #17171b;
+  --ui-ink: #f4f4f6;
+  --ui-ink-2: rgba(255, 255, 255, .6);
+  --ui-hair: rgba(255, 255, 255, .09);
+  --ui-accent: #e9ecf2;
+  --ui-on-accent: #101114;
+  --scrim: rgba(0, 0, 0, .6);
+  --focus: #ffd56a;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}
