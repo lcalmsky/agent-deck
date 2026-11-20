@@ -2,7 +2,28 @@
 
 An iPad page that looks like a stream deck and shows the coding-agent sessions running in Herdr on this Mac. One key per session; pressing a key focuses that session's terminal in the Herdr window.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/agent-deck-demo-dark.gif">
+  <img alt="Tapping a waiting key on the iPad deck brings the Herdr window on the Mac to the front and focuses that session; after a reply is typed, the key turns to working" src="docs/media/agent-deck-demo-light.gif" width="900">
+</picture>
+
 Setup guide for a new machine: [docs/install.html](docs/install.html).
+
+## What needs Herdr
+
+| Part | Needs | Without Herdr |
+|---|---|---|
+| Session keys | a session scan script ([herdr-shared `bin/scan.sh`](https://github.com/lcalmsky/herdr-shared)) | likely works: the scan reads Claude Code, Codex and Gemini CLI sessions in any terminal (not yet tried on a Mac without Herdr) |
+| Tap a key to jump to its terminal | the Herdr desktop app and its `herdr-app` CLI | does not work |
+| Account usage bars | usage caches in `~/.local/state/herdr-tower/usage/` (written by herdr-shared `bin/usage-tap.sh`); live numbers then come from each account's Claude Code login | likely works if the caches exist (not yet tried without Herdr) |
+
+## Try it without any agent
+
+```sh
+scripts/demo/run.sh        # made-up sessions and accounts on http://127.0.0.1:8790/?t=demo-token-not-secret
+```
+
+It runs the real server on a throwaway HOME with a fake scan and a fake Herdr CLI, so it reads nothing from this Mac.
 
 ## Install with a coding agent
 
@@ -14,9 +35,9 @@ Install agent-deck on this Mac and onboard me. Answer in the language I write in
 1. Clone https://github.com/lcalmsky/agent-deck into ~/git-repo/agent-deck (or a folder I name) unless it is already there, then read its README.md and docs/install.html.
 2. Check each requirement below and report a table: item, found or missing, what I lose without it, how to fix it.
    - macOS and Node 20 or later (`node -v`). Required: the server does not start without it.
-   - The session scan script: $AGENT_DECK_SCAN if set, else ~/.config/herdr-app/mods/night-city-street/scan.sh. Required: no keys appear without it. If it is missing, explain the one-JSON-line-per-session format in docs/install.html and offer to write a scan script for the agent tool I use.
+   - The session scan script: $AGENT_DECK_SCAN if set, else ~/.config/herdr-app/mods/night-city-street/scan.sh. Required: no keys appear without it. If it is missing, offer to get it from https://github.com/lcalmsky/herdr-shared (`bin/scan.sh`, finds Claude Code, Codex and Gemini CLI sessions, needs python3) and point AGENT_DECK_SCAN at it; if I would rather not, explain the one-JSON-line-per-session format in docs/install.html and offer to write one.
    - Herdr desktop app and the herdr-app CLI ($AGENT_DECK_HERDR, else ~/.local/bin/herdr-app). Recommended: keys show but pressing one does not focus the terminal.
-   - Claude Code logged in (an entry in the login keychain for Claude Code) or usage caches in ~/.local/state/herdr-tower/usage/. Optional: the account usage row stays empty.
+   - Usage caches in ~/.local/state/herdr-tower/usage/ (written by herdr-shared `bin/usage-tap.sh`); the deck lists only accounts that have a cache, then refreshes them with each account's Claude Code login from the keychain. Optional: the account usage row stays empty.
    - The account switcher cca ($AGENT_DECK_CCA, else ~/.local/bin/cca). Optional: tapping an account to make it the default fails.
 3. Do not install or change anything outside the agent-deck folder without asking me first. For each missing item, ask before installing it.
 4. Run `npm test`, then `npm start` in the background, and give me the iPad address it prints (http://<mac-ip>:8787/?t=<token>). Remind me the iPad must be on the same Wi-Fi or the same private network (Tailscale and the like).

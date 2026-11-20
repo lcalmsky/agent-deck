@@ -103,7 +103,7 @@ scripts/launchd.sh uninstall   # 해제</code></pre>
 <p>포트와 바인딩 주소는 <code>AGENT_DECK_PORT</code>(기본 8787)와 <code>AGENT_DECK_HOST</code>(기본 0.0.0.0)로 바꿉니다.</p>
 
 <h3>세션 스캔 스크립트를 직접 만들 때</h3>
-<p>기본 스캔 스크립트는 Herdr의 night-city-street 모드에 들어 있고 이 저장소에는 포함되어 있지 않습니다. 그 모드가 없다면 같은 형식을 출력하는 스크립트를 만들고 <code>AGENT_DECK_SCAN</code>으로 지정하면 됩니다. 스크립트는 세션마다 JSON 한 줄을 출력합니다.</p>
+<p>기본 스캔 스크립트는 이 저장소에 들어 있지 않습니다. <a href="https://github.com/lcalmsky/herdr-shared">herdr-shared</a> 저장소의 <code>bin/scan.sh</code>를 받아 <code>AGENT_DECK_SCAN</code>으로 지정하면 Claude Code, Codex, Gemini CLI 세션을 찾습니다. 다른 도구를 쓴다면 같은 형식을 출력하는 스크립트를 만들고 <code>AGENT_DECK_SCAN</code>으로 지정하면 됩니다. 스크립트는 세션마다 JSON 한 줄을 출력합니다.</p>
 <pre><code>{"t":"s","sessionId":"a1b2","cwd":"/Users/me/git-repo/shop","status":"waiting",
  "statusUpdatedAt":1763350000000,"lastSentence":"이 마이그레이션을 돌릴까요?",
  "where":{"terminalId":"t1"}}
