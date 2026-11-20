@@ -1,0 +1,32 @@
+/* Palette: resin (dark), material resin. Black anodized chassis, smoked resin, blue-white LCD. */
+:root[data-theme="resin"] {
+  --page-bg: #08080a;
+  --room-1: #1c1c21;
+  --room-2: #08080a;
+  --chassis-1: #1d1d22;
+  --chassis-2: #111114;
+  --well-1: #0b0b0d;
+  --well-2: #141417;
+  --cap: #16161a;
+  --cap-idle: #141417;
+  --cap-empty: #121215;
+  --cap-skirt: #0a0a0c;
+  --lcd: #0c0c0e;
+  --lcd-ink: #eaf4ff;
+  --lcd-glow: rgba(140, 200, 255, .35);
+  --lcd-sheen: rgba(120, 200, 255, .05);
+  --ink: #ffffff;
+  --soft-1: rgba(255, 255, 255, .7);
+  --soft-2: rgba(255, 255, 255, .5);
+  --soft-3: rgba(255, 255, 255, .4);
+  --ui-bg: #1b1b20;
+  --ui-ink: #f2f1ee;
+  --ui-ink-2: rgba(255, 255, 255, .55);
+  --ui-hair: rgba(255, 255, 255, .08);
+  --ui-accent: #60a5fa;
+  --ui-on-accent: #071a33;
+  --scrim: rgba(0, 0, 0, .6);
+  --focus: #7aa7ff;
+  --sent-bg: rgba(0, 0, 0, .75);
+  --sent-ink: #ffffff;
+}

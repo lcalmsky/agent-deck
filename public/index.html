@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Deck">
+<meta name="theme-color" content="#f3f1ed">
+<title>Agent Deck</title>
+<meta name="description" content="맥에서 도는 코딩 에이전트 세션을 iPad 덱으로 보고, 키를 누르면 그 터미널로 이동한다">
+<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="./layout.css">
+<script src="./themes/registry.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="deck-noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+</svg>
+<div class="root">
+  <div class="backdrop" aria-hidden="true"></div>
+  <main class="deck" id="deck" aria-label="에이전트 세션 덱">
+    <ul class="grid" id="grid" aria-live="polite"></ul>
+    <ul class="acct-row" id="strip" aria-label="계정 사용량과 맥 연결"></ul>
+    <div class="lift-layer" id="lift-layer" hidden></div>
+  </main>
+</div>
+<div class="sheet" id="sheet" hidden>
+  <section class="panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <header class="panel-head"><h2 id="sheet-title">설정</h2><button type="button" class="tool" data-close aria-label="닫기">닫기</button></header>
+    <div class="row stack">
+      <span class="row-label">테마<small>자동은 iPad가 라이트면 세라믹, 다크면 백라이트 레진이야.</small></span>
+      <div class="themes" id="themes" role="group" aria-label="테마"></div>
+    </div>
+    <div class="row">
+      <span class="row-label">전체 화면<small>시계와 배터리 줄을 숨겨. 아래로 쓸어내리면 끝나.</small></span>
+      <button type="button" class="switch" id="full-toggle" aria-pressed="false"><span>꺼짐</span></button>
+      <span class="row-note" id="full-none">이 화면에서는 전체 화면을 쓸 수 없어. Safari 탭에서 열어 줘.</span>
+    </div>
+  </section>
+</div>
+<script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+/* matte skin: physical keycaps (skirt + top face) in frosted translucent resin on a matte chassis; tokens live in tokens.css */
+
+[data-skin="matte"] body {
+  background:
+    var(--m-grain-soft),
+    radial-gradient(110% 80% at 50% 0%, var(--m-floor-hi) 0%, var(--m-floor) 70%);
+  background-size: 180px 180px, auto;
+  align-content: center;
+  gap: var(--space-lg);
+}
+
+/* the device body the keys are mounted in */
+[data-skin="matte"] .deck {
+  padding: var(--space-xl);
+  border-radius: 48px;
+  background:
+    var(--m-grain-soft),
+    linear-gradient(180deg, var(--m-body) 0%, var(--m-body-2) 100%);
+  background-size: 180px 180px, auto;
+  box-shadow:
+    inset 0 1px 0 var(--m-hi-soft),
+    inset 0 -2px 0 var(--m-low),
+    0 2px 0 var(--m-wall-2),
+    0 40px 60px var(--m-drop);
+}
+
+/* the skirt: the cap's side walls, seen from slightly in front, so more wall shows at the bottom */
+[data-skin="matte"] .well {
+  position: relative;
+  padding: 5% 5.5% 11%;
+  border-radius: 24%;
+  background:
+    radial-gradient(90% 60% at 50% 100%, color-mix(in oklab, var(--tone, var(--m-wall)) var(--m-wall-glow, 0%), transparent) 0%, transparent 80%),
+    linear-gradient(180deg, color-mix(in oklab, var(--tone, var(--m-wall)) var(--m-wall-tint, 0%), var(--m-wall)) 0%, color-mix(in oklab, var(--tone, var(--m-wall)) calc(var(--m-wall-tint, 0%) / 2), var(--m-wall-2)) 100%);
+  box-shadow:
+    inset 0 1px 0 var(--m-hi-soft),
+    inset 0 -3px 6px var(--m-shade),
+    0 0 0 1px var(--m-wall-2),
+    0 10px 16px var(--m-drop),
+    0 0 46px color-mix(in oklab, var(--tone, var(--m-wall)) var(--m-spill, 0%), transparent);
+}
+
+/* the top face: frosted resin, the light inside shows through */
+[data-skin="matte"] .key {
+  padding: var(--space-sm);
+  border-radius: 20%;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--m-text);
+  text-shadow: 0 1px 2px var(--m-shade);
+  background:
+    radial-gradient(70% 60% at 85% 95%, color-mix(in oklab, var(--tone2, var(--m-glass)) 60%, transparent) 0%, transparent 72%),
+    radial-gradient(80% 70% at 18% 8%, color-mix(in oklab, var(--tone, var(--m-glass)) var(--m-sat, 40%), transparent) 0%, transparent 78%),
+    color-mix(in oklab, var(--tone, var(--m-glass)) 22%, var(--m-glass));
+  box-shadow:
+    inset 0 1.5px 0 var(--m-hi),
+    inset 0 12px 20px var(--m-hi-soft),
+    inset 0 -10px 18px var(--m-low),
+    0 2px 3px var(--m-shade);
+  transform: none;
+  transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+}
+[data-skin="matte"] .key:active {
+  transform: translateY(5px);
+  box-shadow: inset 0 1px 0 var(--m-hi-soft), inset 0 -6px 12px var(--m-low), 0 0 0 var(--m-shade);
+}
+[data-skin="matte"] .key:disabled:active { transform: none; }
+[data-skin="matte"] .key::before {
+  background: var(--m-grain);
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+  z-index: 3;
+}
+
+[data-skin="matte"] .lcd {
+  background: none;
+  box-shadow: none;
+  padding: var(--space-2xs);
+  position: static;
+  overflow: visible;
+}
+[data-skin="matte"] .lcd-top { color: var(--m-text-dim); position: relative; z-index: 1; }
+[data-skin="matte"] .lcd-state { color: var(--m-text); }
+[data-skin="matte"] .lcd-name { color: var(--m-text); position: relative; z-index: 1; }
+[data-skin="matte"] .lcd-sub { color: var(--m-text-dim); }
+[data-skin="matte"] .ask { color: var(--m-text); position: relative; z-index: 1; }
+[data-skin="matte"] .ask code { color: var(--m-text); background: var(--m-hi-soft); }
+
+/* the state glyph is a light inside the resin, diffused, not printed on it */
+[data-skin="matte"] .tile {
+  position: absolute;
+  inset: 8% auto auto 6%;
+  width: 66%;
+  height: 66%;
+  background: none;
+  box-shadow: none;
+  color: color-mix(in oklab, var(--tone) 70%, var(--m-text));
+  filter: blur(6px);
+  opacity: 0.9;
+  z-index: 0;
+}
+[data-skin="matte"] .tile svg { width: 100%; height: 100%; stroke-width: 3.2; }
+
+[data-skin="matte"] [data-state="needs"] { --tone2: var(--m-needs-2); --m-sat: 80%; --m-wall-tint: 55%; --m-wall-glow: 60%; --m-spill: 30%; }
+[data-skin="matte"] [data-state="jump"] { --tone2: var(--m-needs-2); --m-sat: 70%; --m-wall-tint: 45%; --m-wall-glow: 45%; --m-spill: 18%; }
+[data-skin="matte"] [data-state="done"] { --tone2: var(--m-done-2); --m-sat: 65%; --m-wall-tint: 45%; --m-wall-glow: 45%; --m-spill: 18%; }
+[data-skin="matte"] [data-state="stalled"] { --tone2: var(--m-stall-2); --m-sat: 65%; --m-wall-tint: 45%; --m-wall-glow: 45%; --m-spill: 18%; }
+[data-skin="matte"] [data-state="working"] { --tone2: var(--m-work-2); --m-sat: 50%; --m-wall-tint: 35%; --m-wall-glow: 30%; --m-spill: 10%; }
+[data-skin="matte"] [data-state="needs"] .lcd::after {
+  inset: 0;
+  border-radius: 20%;
+  box-shadow: inset 0 0 30px color-mix(in oklab, var(--color-needs) 70%, transparent);
+}
+
+/* resting and empty caps: smoked resin, unlit */
+[data-skin="matte"] [data-state="idle"] .key,
+[data-skin="matte"] [data-state="empty"] .key {
+  background:
+    radial-gradient(90% 70% at 30% 0%, var(--m-hi-soft) 0%, transparent 70%),
+    linear-gradient(180deg, var(--m-smoke) 0%, var(--m-smoke-2) 100%);
+}
+[data-skin="matte"] [data-state="idle"] .lcd-top,
+[data-skin="matte"] [data-state="idle"] .lcd-state,
+[data-skin="matte"] [data-state="idle"] .lcd-sub { color: var(--color-muted); }
+[data-skin="matte"] [data-state="idle"] .lcd-name { color: var(--color-ink-2); }
+[data-skin="matte"] [data-state="idle"] .tile { color: var(--color-muted); opacity: 0.45; }
+
+/* strip: a frosted panel set into the chassis */
+[data-skin="matte"] .strip {
+  padding: var(--space-xs);
+  border-radius: 28px;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 120% at 12% 0%, var(--m-hi-soft) 0%, transparent 70%),
+    linear-gradient(180deg, var(--m-smoke-2) 0%, var(--m-smoke) 100%);
+  box-shadow: inset 0 3px 8px var(--m-wall-2), inset 0 -1px 0 var(--m-hi-soft), 0 1px 0 var(--m-hi-soft);
+}
+[data-skin="matte"] .strip::before {
+  border: 0;
+  border-image: none;
+  background: var(--m-grain);
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+[data-skin="matte"] .strip-lcd { background: none; box-shadow: none; }
+[data-skin="matte"] .seg + .seg { border-left-color: var(--m-hi-soft); }
+[data-skin="matte"] .seg-value { color: var(--m-text); }
+[data-skin="matte"] .seg-value.is-stale { color: var(--color-idle); }
+[data-skin="matte"] .meter { height: 6px; border-radius: 3px; background: var(--m-low); }
+[data-skin="matte"] .meter i { border-radius: 3px; box-shadow: 0 0 16px var(--fill, var(--color-ink-2)); }
+
+[data-skin="matte"] .deck[data-link="down"] .keys { opacity: 0.45; filter: saturate(0.15); }
+
+/* fit: the chassis adds its own padding, and the face is smaller than the cap */
+:root[data-skin="matte"] { --deck-w: min(1120px, calc((100dvh - var(--strip-h) - 260px) * 5 / 3 + 4 * var(--key-gap) + 64px), calc(100vw - 48px)); }
+[data-skin="matte"] .deck { padding: var(--space-lg); }
+[data-skin="matte"] .key { padding: var(--space-xs); }
+[data-skin="matte"] .lcd { gap: var(--space-2xs); }
+[data-skin="matte"] .ask { font-size: var(--text-xs); line-height: 1.35; }
+[data-skin="matte"] .ask code { font-size: var(--text-xs); background: none; padding: 0; }
+[data-skin="matte"] [data-state="needs"] .lcd-sub { display: none; }
+
+/* v7: lit caps are deep tinted resin glowing from inside; text takes a pale tint of the cap's own colour */
+[data-skin="matte"] .well { padding: 4.5% 5% 9%; }
+[data-skin="matte"] .key {
+  --kt: color-mix(in oklab, var(--tone, var(--m-text-tint)) 16%, var(--m-text-tint));
+  --kt-2: color-mix(in oklab, var(--tone, var(--m-text-tint)) 45%, var(--m-text-tint));
+  color: var(--kt);
+  text-shadow: none;
+  background:
+    radial-gradient(70% 60% at 88% 100%, color-mix(in oklab, var(--tone2, var(--m-resin)) 40%, transparent) 0%, transparent 72%),
+    radial-gradient(75% 70% at 30% 28%, color-mix(in oklab, var(--tone, var(--m-resin)) var(--m-sat, 40%), transparent) 0%, transparent 80%),
+    color-mix(in oklab, var(--tone, var(--m-resin)) 26%, var(--m-resin));
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in oklab, var(--tone, var(--m-text-tint)) 40%, var(--m-hi)),
+    inset 0 14px 22px var(--m-hi-soft),
+    inset 0 -12px 20px var(--m-low),
+    0 2px 3px var(--m-shade);
+}
+[data-skin="matte"] .lcd-top,
+[data-skin="matte"] .lcd-sub { color: var(--kt-2); }
+[data-skin="matte"] .lcd-state,
+[data-skin="matte"] .lcd-name,
+[data-skin="matte"] .ask,
+[data-skin="matte"] .ask code { color: var(--kt); }
+[data-skin="matte"] .tile {
+  color: color-mix(in oklab, var(--tone) 70%, var(--m-text-tint));
+  filter: blur(8px);
+  opacity: 0.75;
+}
+/* working is the quiet lit state: dimmer, and its spinner stays readable as a ring */
+[data-skin="matte"] [data-state="working"] { --m-sat: 28%; --m-wall-tint: 22%; --m-wall-glow: 14%; --m-spill: 0%; }
+[data-skin="matte"] [data-state="working"] .tile { inset: 14% auto auto 12%; width: 48%; height: 48%; filter: blur(2.5px); opacity: 0.6; }
+[data-skin="matte"] [data-state="done"] { --m-sat: 62%; --m-spill: 22%; }
+[data-skin="matte"] [data-state="needs"] { --m-sat: 72%; }
+
+/* unlit caps recede */
+[data-skin="matte"] [data-state="empty"] .well,
+[data-skin="matte"] [data-state="idle"] .well { box-shadow: inset 0 1px 0 var(--m-hi-soft), inset 0 -3px 6px var(--m-shade), 0 8px 12px var(--m-drop); }
+[data-skin="matte"] [data-state="idle"] .key,
+[data-skin="matte"] [data-state="empty"] .key {
+  box-shadow: inset 0 1px 0 var(--m-hi-soft), inset 0 -10px 16px var(--m-low);
+}
+[data-skin="matte"] [data-state="idle"] .key { --kt: var(--color-ink-2); --kt-2: var(--color-muted); }

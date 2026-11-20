@@ -1,0 +1,38 @@
+/* Palette: ceramic (light), material ceramic. Warm off-white glaze on a stone desk. */
+:root[data-theme="ceramic"] {
+  --page-bg: #dedad4;
+  --bg-1: #f3f1ed;
+  --bg-2: #dedad4;
+  --ink: #1d1d1f;
+  --ink-2: #5d5d63;
+  --ink-3: #66666c;
+  --ink-4: #8a8a90;
+  --ink-idle: #3a3a3f;
+  --key-top: #fdfcfa;
+  --key-bottom: #f0eee9;
+  --key-hi: #fff;
+  --skirt: #d4d0c9;
+  --skirt-edge: #bcb7ae;
+  --key-inner: rgba(120, 100, 80, .2);
+  --key-drop: rgba(80, 65, 50, .3);
+  --key-drop-soft: rgba(80, 65, 50, .25);
+  --strip: #e3e0da;
+  --hair: rgba(0, 0, 0, .08);
+  --slot: rgba(0, 0, 0, .07);
+  --chip-idle: #ebe8e3;
+  --chip-idle-ink: #85858b;
+  --meter-ok: #2a2a2e;
+  --meter-warn: #e0951c;
+  --meter-bad: #d4513a;
+  /* shared UI */
+  --ui-bg: #fdfcfa;
+  --ui-ink: #1d1d1f;
+  --ui-ink-2: #66666c;
+  --ui-hair: rgba(0, 0, 0, .07);
+  --ui-accent: #047857;
+  --ui-on-accent: #fff;
+  --scrim: rgba(20, 18, 16, .35);
+  --focus: #1d4ed8;
+  --sent-bg: rgba(29, 29, 31, .78);
+  --sent-ink: #fdfcfa;
+}

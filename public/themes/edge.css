@@ -1,0 +1,29 @@
+/* Palette: edge (dark), material edge. Midnight ink with a blue floor light. */
+:root[data-theme="edge"] {
+  --page-bg: #070912;
+  --room-1: #131a33;
+  --room-2: #070912;
+  --floor-glow: rgba(80, 110, 255, .18);
+  --cap-1: #1b2036;
+  --cap-2: #10131f;
+  --cap-idle-1: #171b2c;
+  --cap-idle-2: #0e111b;
+  --strip-1: rgba(27, 32, 54, .85);
+  --strip-2: rgba(16, 19, 31, .85);
+  --ink: #f4f6ff;
+  --soft-1: rgba(214, 222, 255, .65);
+  --soft-2: rgba(214, 222, 255, .55);
+  --soft-3: rgba(214, 222, 255, .42);
+  --meter-tail: #a5b4fc;
+  --warn-tail: #fde68a;
+  --ui-bg: #161b2e;
+  --ui-ink: #f4f6ff;
+  --ui-ink-2: rgba(214, 222, 255, .6);
+  --ui-hair: rgba(214, 222, 255, .1);
+  --ui-accent: #818cf8;
+  --ui-on-accent: #0b0f24;
+  --scrim: rgba(3, 5, 12, .6);
+  --focus: #a5b4fc;
+  --sent-bg: rgba(7, 9, 18, .78);
+  --sent-ink: #f4f6ff;
+}

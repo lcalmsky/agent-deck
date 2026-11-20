@@ -1,0 +1,37 @@
+/* Palette: charcoal (dark), material ceramic. The same glazed keycaps in dark grey. */
+:root[data-theme="charcoal"] {
+  --page-bg: #141416;
+  --bg-1: #2a2a2e;
+  --bg-2: #141416;
+  --ink: #f2f1ee;
+  --ink-2: #b4b4ba;
+  --ink-3: #9a9aa0;
+  --ink-4: #76767c;
+  --ink-idle: #c9c9ce;
+  --key-top: #3b3b40;
+  --key-bottom: #2d2d32;
+  --key-hi: rgba(255, 255, 255, .12);
+  --skirt: #1e1e22;
+  --skirt-edge: #0e0e10;
+  --key-inner: rgba(0, 0, 0, .35);
+  --key-drop: rgba(0, 0, 0, .6);
+  --key-drop-soft: rgba(0, 0, 0, .45);
+  --strip: #222226;
+  --hair: rgba(255, 255, 255, .08);
+  --slot: rgba(255, 255, 255, .08);
+  --chip-idle: #45454b;
+  --chip-idle-ink: #a0a0a6;
+  --meter-ok: #e8e7e3;
+  --meter-warn: #e0951c;
+  --meter-bad: #d4513a;
+  --ui-bg: #2d2d32;
+  --ui-ink: #f2f1ee;
+  --ui-ink-2: #a0a0a6;
+  --ui-hair: rgba(255, 255, 255, .08);
+  --ui-accent: #34d399;
+  --ui-on-accent: #062b1e;
+  --scrim: rgba(0, 0, 0, .55);
+  --focus: #7aa7ff;
+  --sent-bg: rgba(0, 0, 0, .72);
+  --sent-ink: #f2f1ee;
+}

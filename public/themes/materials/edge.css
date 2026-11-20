@@ -1,0 +1,39 @@
+/* Material: edge. Matte ink keycaps with state light leaking along the rim and a large glyph pressed into the face. Palette: edge. */
+:root[data-material="edge"] {
+  .root { background: radial-gradient(90% 80% at 50% 0%, var(--room-1), var(--room-2) 70%); }
+  .backdrop { background: radial-gradient(60% 40% at 50% 100%, var(--floor-glow), transparent 70%); }
+  .key {
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(165deg, var(--cap-1), var(--cap-2)) padding-box,
+      linear-gradient(150deg, rgba(var(--c), .95), rgba(var(--c), .15) 38%, rgba(255, 255, 255, .06) 60%, rgba(var(--c), .35)) border-box;
+    box-shadow: 0 18px 34px -16px rgba(0, 0, 0, .9), 0 0 28px -10px rgba(var(--c), .55);
+  }
+  .key:active:not(:disabled) { transform: translateY(2px) scale(.985); }
+  .grain { mix-blend-mode: overlay; opacity: .18; }
+  .glow { inset: 0; opacity: 0; background: radial-gradient(80% 60% at 0% 0%, rgba(var(--c), .26), transparent 60%), linear-gradient(0deg, rgba(var(--c), .1), transparent 40%); }
+  .s-done .glow, .s-working .glow, .s-needs .glow, .s-stalled .glow { opacity: 1; }
+  .mark { display: block; right: 10px; top: 50%; width: 46%; height: 46%; transform: translateY(-62%); color: rgba(var(--c), .16); }
+  .s-needs .key { animation: rim 2.4s ease-in-out infinite; }
+  .chip { width: 26px; height: 26px; border-radius: 9px; color: rgb(var(--c)); background: rgba(var(--c), .14); }
+  .chip svg { width: 14px; height: 14px; }
+  .s-idle .chip { color: var(--soft-3); background: rgba(255, 255, 255, .06); }
+  .time { color: var(--soft-2); }
+  .extra { color: rgb(var(--c)); background: rgba(var(--c), .14); }
+  .label { color: rgb(var(--c)); }
+  .name { font-size: 18px; color: var(--ink); }
+  .task { color: var(--soft-1); }
+  .s-idle .key { background: linear-gradient(165deg, var(--cap-idle-1), var(--cap-idle-2)) padding-box, linear-gradient(150deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .03)) border-box; box-shadow: 0 18px 34px -16px rgba(0, 0, 0, .9); }
+  .s-idle .label { color: var(--soft-3); }
+  .s-idle .name { color: var(--soft-1); }
+  .s-empty.key { background: linear-gradient(165deg, transparent, var(--cap-2)) padding-box, linear-gradient(150deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)) border-box; box-shadow: none; }
+  .slot { background: rgba(255, 255, 255, .1); }
+  .chead b, .val { color: var(--ink); }
+  .chead span, .note { color: var(--soft-2); }
+  .val.dim { color: var(--soft-3); }
+  .bar { background: var(--ui-hair); }
+  .t-ok { background: linear-gradient(90deg, rgb(var(--c-work)), var(--meter-tail)); }
+  .t-warn { background: linear-gradient(90deg, rgb(var(--c-wait)), var(--warn-tail)); }
+  .t-bad { background: rgb(var(--c-stall)); }
+}
+@keyframes rim { 50% { box-shadow: 0 18px 34px -16px rgba(0, 0, 0, .9), 0 0 44px -4px rgba(var(--c-wait), .75); } }

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Deck 설치</title>
+<style>
+:root {
+  --bg: #FFFFFF; --surface: #F5F5F7; --text: #1D1D1F; --muted: #6E6E73; --line: #D2D2D7; --accent: #0066CC;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Apple SD Gothic Neo", monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #16161A; --surface: #1F1F24; --text: #F5F5F7; --muted: #98989D; --line: #3A3A3F; --accent: #4DA3FF; color-scheme: dark; }
+}
+html, body { overflow-x: clip; }
+body {
+  margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans);
+  font-size: 17px; line-height: 1.78; letter-spacing: -0.012em; word-break: keep-all;
+}
+main { max-width: 41rem; margin: 0 auto; padding: 4rem 16px 6rem; }
+h1 { font-size: 2.2rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.032em; margin: 0 0 1rem; }
+h2 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; margin: 3.4rem 0 0.8rem; }
+h3 { font-size: 1.08rem; font-weight: 600; margin: 2rem 0 0.4rem; }
+p, li { margin: 0.6rem 0; }
+ul, ol { padding-left: 1.3rem; }
+.lead { color: var(--muted); font-size: 1.08rem; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 2.4rem 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--surface); padding: 0.1em 0.35em; border-radius: 6px; }
+pre { margin: 1rem 0; background: var(--surface); border-radius: 12px; padding: 14px 18px; overflow-x: auto; line-height: 1.6; }
+pre code { background: none; padding: 0; font-size: 0.86rem; }
+.table { overflow-x: auto; margin: 1rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.8rem 0.55rem 0; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--muted); }
+td code { white-space: nowrap; }
+.note { background: var(--surface); border-radius: 12px; padding: 14px 18px; margin: 1.2rem 0; }
+.note p { margin: 0.3rem 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Agent Deck 설치</h1>
+<p class="lead">Agent Deck은 Mac에서 돌아가는 코딩 에이전트 세션을 iPad 화면에 스트림 덱처럼 띄우는 웹 페이지입니다. 세션 하나가 키 하나이고, 키를 누르면 Mac의 Herdr 창에서 그 세션의 터미널로 포커스가 옮겨 갑니다.</p>
+
+<hr>
+
+<h2>무엇이 필요한가</h2>
+<p>서버는 의존성이 없는 Node 스크립트 하나라서 설치할 패키지가 없습니다. 다만 화면에 보여 줄 데이터를 Mac의 다른 도구에서 읽어 오기 때문에, 어떤 도구가 있느냐에 따라 보이는 범위가 달라집니다.</p>
+<div class="table"><table>
+<thead><tr><th>항목</th><th>필수 여부</th><th>없으면</th></tr></thead>
+<tbody>
+<tr><td>macOS, Node 20 이상</td><td>필수</td><td>서버가 뜨지 않습니다</td></tr>
+<tr><td>세션 스캔 스크립트</td><td>필수</td><td>키가 하나도 나오지 않습니다</td></tr>
+<tr><td>Herdr 데스크톱 앱과 <code>herdr-app</code> CLI</td><td>권장</td><td>키는 보이지만 눌러도 터미널로 이동하지 않습니다</td></tr>
+<tr><td>Claude Code 로그인</td><td>선택</td><td>계정 사용량 줄이 비어 있습니다</td></tr>
+<tr><td>계정 전환 도구 <code>cca</code></td><td>선택</td><td>계정을 눌러 기본 계정을 바꾸는 기능이 실패합니다</td></tr>
+</tbody>
+</table></div>
+<p>iPad는 Mac과 같은 Wi-Fi에 있거나, 둘 다 Tailscale 같은 사설망에 들어가 있어야 합니다.</p>
+
+<h2>설치와 실행</h2>
+<pre><code>git clone &lt;이 저장소 주소&gt; agent-deck
+cd agent-deck
+npm test      # 상태 모델 테스트, 의존성 설치 없이 바로 돕니다
+npm start     # node server/server.mjs, 포트 8787</code></pre>
+<p>서버가 뜨면 터미널에 iPad에서 열 주소가 찍힙니다. 주소는 <code>http://&lt;Mac IP&gt;:8787/?t=&lt;토큰&gt;</code> 형태입니다. 이 주소로 처음 접속하면 토큰을 쿠키로 바꾸고, 그 뒤에는 토큰 없이 <code>http://&lt;Mac IP&gt;:8787/</code>만 열어도 됩니다.</p>
+<div class="note">
+<p>토큰은 <code>~/.config/agent-deck/token</code>에 저장됩니다. 주소가 다른 사람에게 노출됐다면 이 파일을 지우고 서버를 다시 시작하세요. 새 토큰이 발급되고 이전 쿠키는 더 이상 통하지 않습니다.</p>
+</div>
+
+<h3>로그인할 때 자동으로 띄우기</h3>
+<pre><code>scripts/launchd.sh install     # 등록하고 바로 실행
+scripts/launchd.sh status      # 실행 상태 확인
+scripts/launchd.sh uninstall   # 해제</code></pre>
+<p>launchd로 띄우면 iPad 주소는 터미널 대신 <code>~/.local/state/agent-deck/server.log</code>에 찍힙니다.</p>
+
+<h2>iPad에서 열기</h2>
+<ol>
+<li>Safari에서 서버가 알려 준 주소를 엽니다.</li>
+<li>공유 버튼에서 "홈 화면에 추가"를 고르면 주소창 없이 전체 화면으로 열립니다.</li>
+<li>오른쪽 아래 연결 키의 톱니바퀴에서 테마와 전체 화면을 고를 수 있습니다.</li>
+<li>화면이 꺼지지 않게 하려면 iPad를 충전기에 연결해 두세요. 저전력 모드에서는 자동 잠금 시간이 짧아집니다.</li>
+</ol>
+
+<h2>데이터를 어디서 읽는가</h2>
+<p>아래 경로는 기본값이고, 환경 변수가 있는 항목은 다른 경로로 바꿀 수 있습니다.</p>
+<div class="table"><table>
+<thead><tr><th>데이터</th><th>기본 경로</th><th>환경 변수</th></tr></thead>
+<tbody>
+<tr><td>세션 목록</td><td><code>~/.config/herdr-app/mods/night-city-street/scan.sh</code></td><td><code>AGENT_DECK_SCAN</code></td></tr>
+<tr><td>터미널 목록과 포커스</td><td><code>~/.local/bin/herdr-app</code></td><td><code>AGENT_DECK_HERDR</code></td></tr>
+<tr><td>계정 사용량 캐시</td><td><code>~/.local/state/herdr-tower/usage/*.json</code></td><td>없음</td></tr>
+<tr><td>계정 표시 이름</td><td><code>~/.local/state/herdr-tower/labels</code></td><td>없음</td></tr>
+<tr><td>현재 기본 계정</td><td><code>~/.local/state/herdr-tower/current</code></td><td>없음</td></tr>
+<tr><td>계정 전환</td><td><code>~/.local/bin/cca use &lt;계정&gt;</code></td><td><code>AGENT_DECK_CCA</code></td></tr>
+</tbody>
+</table></div>
+<p>포트와 바인딩 주소는 <code>AGENT_DECK_PORT</code>(기본 8787)와 <code>AGENT_DECK_HOST</code>(기본 0.0.0.0)로 바꿉니다.</p>
+
+<h3>세션 스캔 스크립트를 직접 만들 때</h3>
+<p>기본 스캔 스크립트는 Herdr의 night-city-street 모드에 들어 있고 이 저장소에는 포함되어 있지 않습니다. 그 모드가 없다면 같은 형식을 출력하는 스크립트를 만들고 <code>AGENT_DECK_SCAN</code>으로 지정하면 됩니다. 스크립트는 세션마다 JSON 한 줄을 출력합니다.</p>
+<pre><code>{"t":"s","sessionId":"a1b2","cwd":"/Users/me/git-repo/shop","status":"waiting",
+ "statusUpdatedAt":1763350000000,"lastSentence":"이 마이그레이션을 돌릴까요?",
+ "where":{"terminalId":"t1"}}
+{"t":"meta","error":null}</code></pre>
+<ul>
+<li><code>status</code>는 <code>waiting</code>, <code>busy</code>, <code>idle</code>, <code>shell</code> 중 하나입니다. waiting은 "확인 필요", busy는 "작업 중", idle은 "결과 도착"으로 보입니다.</li>
+<li>busy인데 <code>lastMeaningfulAt</code>이 10분 넘게 갱신되지 않고 백그라운드 작업도 없으면 "멈춤"으로 바뀝니다.</li>
+<li><code>where.terminalId</code>가 <code>herdr-app ls</code>의 터미널 id와 맞아야 키를 눌렀을 때 그 터미널로 이동합니다.</li>
+<li>시각은 모두 밀리초 단위 epoch 값입니다. 그 밖에 읽는 필드는 <code>server/model.mjs</code>의 <code>buildKeys</code>와 <code>detailOf</code>에서 확인할 수 있습니다.</li>
+</ul>
+
+<h2>계정 사용량은 어떻게 가져오는가</h2>
+<p>서버는 5분마다 Claude Code가 macOS 키체인에 저장한 OAuth 토큰을 읽어 <code>api.anthropic.com</code>의 사용량 API를 호출합니다. 기본 계정은 키체인 항목 <code>Claude Code-credentials</code>를, 추가 계정은 <code>~/.claude-accounts/&lt;계정&gt;</code> 설정 폴더에 대응하는 항목을 씁니다. 처음 호출할 때 macOS가 키체인 접근을 허용할지 물어봅니다.</p>
+<ul>
+<li>토큰은 Anthropic API로만 전송되고, iPad로 보내는 상태 데이터에는 들어가지 않습니다.</li>
+<li>토큰이 만료되면 서버는 갱신하지 않고 캐시 파일 값을 보여 줍니다. 해당 계정으로 Claude Code를 한 번 실행하면 토큰이 갱신됩니다.</li>
+<li>플랜 이름은 각 계정의 <code>.claude.json</code>에서 읽습니다. 플랜에 없는 제한 창은 표시하지 않습니다.</li>
+</ul>
+
+<h2>조작</h2>
+<div class="table"><table>
+<thead><tr><th>동작</th><th>결과</th></tr></thead>
+<tbody>
+<tr><td>세션 키 누르기</td><td>Mac의 Herdr 창에서 그 세션의 터미널로 이동합니다</td></tr>
+<tr><td>세션 키 길게 누르기</td><td>마지막 대화, 실행 중인 도구, PR, 작업 위치를 담은 카드가 열립니다</td></tr>
+<tr><td>계정 누르기</td><td>그 계정을 기본 계정으로 바꿀지 확인한 뒤 <code>cca use</code>를 실행합니다. 새로 시작하는 세션부터 적용됩니다</td></tr>
+<tr><td>계정 길게 누르기</td><td>제한 창별 사용률과 초기화 시각, Fable 사용 비중을 담은 카드가 열립니다</td></tr>
+</tbody>
+</table></div>
+
+<h2>문제가 생겼을 때</h2>
+<h3>iPad에서 접속이 안 됩니다</h3>
+<p>Mac 방화벽이 Node의 수신 연결을 막고 있는지 확인하세요. 회사 Wi-Fi처럼 기기 사이 통신을 막는 망에서는 같은 Wi-Fi에 있어도 접속되지 않으므로 Tailscale을 쓰는 편이 확실합니다.</p>
+<h3>키가 하나도 나오지 않습니다</h3>
+<p>스캔 스크립트를 직접 실행해서 JSON 줄이 나오는지 확인하세요. <code>sh "$AGENT_DECK_SCAN" | head</code>로 볼 수 있습니다.</p>
+<h3>키를 눌러도 터미널로 가지 않습니다</h3>
+<p><code>herdr-app ls</code>가 터미널 목록을 출력하는지, 그 id가 스캔 결과의 <code>where.terminalId</code>와 같은지 확인하세요. 터미널을 찾지 못한 키는 흐리게 표시되고 눌리지 않습니다.</p>
+
+<hr>
+<p class="lead">저장소 구성: <code>server/</code>는 서버와 상태 모델, <code>public/</code>는 iPad 페이지와 테마(<code>public/themes/README.md</code>에 테마 추가 규칙), <code>mockup/</code>은 초기 디자인 시안입니다.</p>
+</main>
+</body>
+</html>

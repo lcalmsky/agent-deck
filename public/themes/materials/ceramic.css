@@ -1,0 +1,44 @@
+/* Material: ceramic. Glazed keycaps with a solid skirt and a soft drop shadow. Palettes: ceramic, charcoal. */
+:root[data-material="ceramic"] {
+  .root { background: radial-gradient(ellipse 80% 70% at 50% 35%, var(--bg-1) 0%, var(--bg-2) 100%); color: var(--ink); }
+  .well { padding-bottom: 8px; }
+  .key {
+    background: linear-gradient(180deg, var(--key-top) 0%, var(--key-bottom) 100%);
+    box-shadow: inset 0 1px 0 var(--key-hi), inset 0 -12px 18px -12px var(--key-inner), 0 6px 0 var(--skirt), 0 7px 0 var(--skirt-edge), 0 16px 20px -8px var(--key-drop);
+  }
+  .key:active:not(:disabled) {
+    transform: translateY(5px);
+    box-shadow: inset 0 1px 0 var(--key-hi), 0 1px 0 var(--skirt), 0 2px 0 var(--skirt-edge), 0 3px 5px var(--key-drop-soft);
+  }
+  .glow {
+    inset: -20px;
+    opacity: 0;
+    filter: blur(20px);
+    background: radial-gradient(70% 60% at 24% 24%, rgba(var(--c), .6) 0%, rgba(var(--c), .16) 50%, transparent 80%), radial-gradient(110% 55% at 50% 115%, rgba(var(--c), .28) 0%, transparent 70%);
+  }
+  .s-done .glow, .s-working .glow, .s-needs .glow, .s-stalled .glow { opacity: .32; }
+  .s-needs .glow { animation: glaze 2.6s ease-in-out infinite; }
+  .grain { mix-blend-mode: multiply; opacity: .05; }
+  .chip { color: #fff; background: linear-gradient(180deg, rgb(var(--c)), rgb(var(--cd))); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), 0 5px 12px -3px rgba(var(--cd), .55); }
+  .s-idle .chip { color: var(--chip-idle-ink); background: var(--chip-idle); box-shadow: inset 0 1px 2px var(--hair); }
+  .time { color: var(--ink-3); }
+  .extra { color: rgb(var(--cd)); background: rgba(var(--c), .2); }
+  .label { color: rgb(var(--cd)); }
+  .name { color: var(--ink); }
+  .s-idle .name { color: var(--ink-idle); }
+  .task { color: var(--ink-2); }
+  .slot { background: var(--slot); }
+  .chead b, .val { color: var(--ink); }
+  .chead span, .note { color: var(--ink-3); }
+  .val.dim { color: var(--ink-4); }
+  .bar { background: var(--hair); }
+  .t-ok { background: var(--meter-ok); }
+  .t-warn { background: var(--meter-warn); }
+  .t-bad { background: var(--meter-bad); }
+}
+/* on a dark glaze the deep tone disappears, so state text takes the light tone */
+:root[data-material="ceramic"][data-scheme="dark"] {
+  .label, .extra { color: rgb(var(--c)); }
+  .grain { mix-blend-mode: screen; opacity: .04; }
+}
+@keyframes glaze { 0%, 100% { opacity: .32; } 50% { opacity: .12; } }

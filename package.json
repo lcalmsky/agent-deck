@@ -1,0 +1,12 @@
+{
+  "name": "agent-deck",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "iPad deck that shows coding-agent sessions on this Mac and jumps to their terminal",
+  "scripts": {
+    "start": "node server/server.mjs",
+    "test": "node --test server/"
+  },
+  "engines": { "node": ">=20" }
+}
