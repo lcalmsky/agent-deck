@@ -2,6 +2,8 @@
 (() => {
   const SLOTS = 15; // 5 x 3
   const LABEL = { needs: "내 차례", done: "결과 도착", stalled: "멈춤", working: "작업 중", idle: "쉬는 중" };
+  const RANK = { needs: 0, stalled: 1, done: 2, working: 3, idle: 4 }; // attention order: a group takes its loudest member's colour
+  const CVAR = { needs: "--c-wait", stalled: "--c-stall", done: "--c-done", working: "--c-work", idle: "--c-neutral" };
   const svg = (inner, extra = "") => `<svg ${extra} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
   const ICON = {
     done: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'stroke-width="2.4"'),
@@ -9,6 +11,9 @@
     needs: svg('<path d="M20 11.5a7.5 7.5 0 0 1-10.9 6.7L4.5 19.5l1.3-4.2A7.5 7.5 0 1 1 20 11.5z"/><path d="M9 11.5h.01M12.5 11.5h.01M16 11.5h.01" stroke-width="2.8"/>', 'stroke-width="2"'),
     stalled: svg('<path d="M10 8v8"/><path d="M14 8v8"/>', 'stroke-width="2.4"'),
     idle: svg('<path d="M19.5 14.2A7.5 7.5 0 1 1 9.8 4.5a6 6 0 0 0 9.7 9.7z"/>', 'stroke-width="2"'),
+    folder: svg('<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>', 'stroke-width="2"'),
+    back: svg('<path d="M15 5l-7 7 7 7"/>', 'stroke-width="2.2"'),
+    more: svg('<path d="M5 12h.01M12 12h.01M19 12h.01"/>', 'stroke-width="3.2"'),
   };
   const GRAIN = '<svg class="grain" aria-hidden="true"><rect width="100%" height="100%" filter="url(#deck-noise)"/></svg>';
 
@@ -21,6 +26,10 @@
   let online = false;
   let pressed = null; // { terminal, text, until }
   let pressedAcct = null; // { id, text, until }
+  let openFolder = null; // name of the repository folder the grid is showing, null for the top level
+  let moreList = []; // sessions folded into the overflow key
+  let folderTimer = null;
+  const FOLDER_MS = 60000;
 
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const now = () => Date.now() + offset;
@@ -68,6 +77,33 @@
   }
 
   const emptyHtml = `<li class="well s-empty"><div class="key s-empty" aria-hidden="true">${GRAIN}<span class="slot"></span></div></li>`;
+  const pad = (items) => { while (items.length < SLOTS) items.push(emptyHtml); return items; };
+
+  const loudest = (list) => list.reduce((m, k) => (RANK[k.status] < RANK[m] ? k.status : m), "idle");
+  const countBy = (list) => list.reduce((m, k) => ((m[k.status] = (m[k.status] || 0) + 1), m), {});
+  const sumText = (list) => Object.entries(countBy(list)).sort((a, b) => RANK[a[0]] - RANK[b[0]]).map(([s, n]) => `${LABEL[s]} ${n}`).join(" · ");
+  const dotsHtml = (list) => `<span class="fdots" aria-hidden="true">${list.slice().sort((a, b) => RANK[a.status] - RANK[b.status]).map((k) => `<i class="${esc(k.status)}" style="--dc:var(${CVAR[k.status]})"></i>`).join("")}</span>`;
+
+  function folderHtml(name, list) {
+    const st = loudest(list);
+    return `<li class="well folder s-${st}"><button type="button" class="key s-${st}" data-folder="${esc(name)}" aria-label="폴더 ${esc(name)}, 세션 ${list.length}개, ${esc(sumText(list))}, 누르면 열기">
+  <span class="glow"></span>${GRAIN}<span class="mark" aria-hidden="true">${ICON.folder}</span>
+  <span class="face"><span class="top"><span class="chip" aria-hidden="true">${ICON.folder}</span><span class="meta"><span class="count">${list.length}</span></span></span>
+    <span class="bottom"><span class="label">${esc(sumText(list))}</span><span class="name">${esc(name)}</span>${dotsHtml(list)}</span></span>
+  <span class="sent"></span></button></li>`;
+  }
+
+  function moreHtml(list) {
+    const st = loudest(list);
+    return `<li class="well s-${st}"><button type="button" class="key more s-${st}" data-more aria-label="접힌 세션 ${list.length}개, ${esc(sumText(list))}, 누르면 목록">
+  <span class="glow"></span>${GRAIN}<span class="mark" aria-hidden="true">${ICON.more}</span>
+  <span class="face"><span class="top"><span class="chip" aria-hidden="true">${ICON.more}</span><span class="meta"><span class="time">접힘</span></span></span>
+    <span class="bottom"><span class="label">${esc(sumText(list))}</span><span class="name">+${list.length}</span>${dotsHtml(list)}</span></span>
+  <span class="sent"></span></button></li>`;
+  }
+
+  const backHtml = (name, n) => `<li class="well"><button type="button" class="key back" data-back aria-label="폴더 닫기">
+  <span class="glow"></span>${GRAIN}<span class="face">${ICON.back}<span class="name">${esc(name)}</span><span class="task">세션 ${n}개 · 눌러서 돌아가기</span></span></button></li>`;
 
   const tone = (v) => (v == null || v === 0 ? "t-none" : v >= 90 ? "t-bad" : v >= 70 ? "t-warn" : "t-ok");
   function resetIn(w) {
@@ -116,6 +152,44 @@
   const saveFull = (v) => { wantFull = v; try { localStorage.setItem("deck-full", v ? "1" : "0"); } catch {} };
   // re-enter on the first touch after the page opens, if fullscreen was on last time
   document.addEventListener("pointerdown", () => { if (canFull && wantFull && !isFull()) enterFull(); }, { capture: true });
+
+  // ---- keep awake: the iPad auto-locks even while charging, so hold the screen on while the deck is open ----
+  (() => {
+    // navigator.wakeLock needs a secure context, and the deck is opened over plain http on the LAN
+    const useLock = window.isSecureContext && "wakeLock" in navigator;
+    let lock = null;
+    let video = null;
+    const held = () => (useLock ? !!(lock && !lock.released) : !!(video && !video.paused));
+    function startVideo() {
+      if (!video) {
+        video = document.createElement("video");
+        video.src = "/assets/awake.mp4";
+        video.muted = true;
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+        // display:none would stop the video, so keep it rendered at 1px and nearly transparent
+        video.style.cssText = "position:fixed;left:0;top:0;width:1px;height:1px;opacity:0.01;pointer-events:none;";
+        // WebKit may not hold the screen for a video with the loop attribute, so rewind by hand
+        video.addEventListener("timeupdate", () => { if (video.currentTime > 0.5) video.currentTime = 0; });
+        document.body.appendChild(video);
+      }
+      video.play().catch(() => {});
+    }
+    async function acquire() {
+      if (held()) return;
+      if (useLock) {
+        try {
+          lock = await navigator.wakeLock.request("screen");
+          lock.addEventListener("release", () => { lock = null; });
+          return;
+        } catch {}
+      }
+      startVideo();
+    }
+    document.addEventListener("pointerdown", () => { acquire(); }, { capture: true });
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") acquire(); });
+  })();
 
   const ICON_GEAR = svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>', 'stroke-width="1.8"');
 
@@ -184,10 +258,24 @@
 
   function render() {
     deck.classList.toggle("offline", !online);
-    const keys = state?.keys ?? [];
-    const items = keys.slice(0, SLOTS).map(keyHtml);
-    while (items.length < SLOTS) items.push(emptyHtml);
-    setHtml(grid, items.join("\n"));
+    const groups = new Map();
+    for (const k of state?.keys ?? []) {
+      if (!groups.has(k.name)) groups.set(k.name, []);
+      groups.get(k.name).push(k);
+    }
+    if (openFolder && (groups.get(openFolder)?.length ?? 0) < 2) { openFolder = null; clearTimeout(folderTimer); }
+    if (openFolder) {
+      const list = groups.get(openFolder).slice().sort((a, b) => RANK[a.status] - RANK[b.status]);
+      setHtml(grid, pad([backHtml(openFolder, list.length), ...list.slice(0, SLOTS - 1).map(keyHtml)]).join("\n"));
+    } else {
+      const items = [...groups].map(([name, list]) => ({ name, list, rank: RANK[loudest(list)], since: Math.max(...list.map((k) => k.since || 0)) }))
+        .sort((a, b) => a.rank - b.rank || b.since - a.since);
+      const folded = items.length > SLOTS;
+      const shown = folded ? items.slice(0, SLOTS - 1) : items;
+      moreList = folded ? items.slice(SLOTS - 1).flatMap((g) => g.list) : [];
+      setHtml(grid, pad([...shown.map((g) => (g.list.length > 1 ? folderHtml(g.name, g.list) : keyHtml(g.list[0]))), ...(moreList.length ? [moreHtml(moreList)] : [])]).join("\n"));
+    }
+    grid.classList.toggle("pop", !!openFolder);
     const accts = (state?.accounts ?? []).slice(0, 4);
     const span = accts.length <= 2 ? 2 : 1;
     setHtml(strip, accts.map((a) => acctHtml(a, span)).join("\n") + deviceHtml());
@@ -201,6 +289,11 @@
   let lift = null; // { kind: "key" | "acct" | "confirm", id }
   let liftMsg = "";
   let swallowClick = false;
+  // full last exchange from /api/talk, fetched when a card opens and again when the session moves on
+  const talk = new Map(); // id -> { sig, value }
+  const talkBusy = new Set();
+  const shortPaths = (s) => s.replace(/(?:\/Users\/|~\/)\S*\/([^\s/]+)/g, "$1");
+  const md = (s) => (window.renderMarkdown ? window.renderMarkdown(s) : `<p>${esc(s)}</p>`);
   const I = {
     you: svg('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>', 'stroke-width="1.8"'),
     bot: svg('<rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4M9 13h.01M15 13h.01"/>', 'stroke-width="1.8"'),
@@ -227,19 +320,25 @@
       d.pr && [I.pr, "PR", d.pr.url ? `<a href="${esc(d.pr.url)}" target="_blank" rel="noopener">#${d.pr.number}</a>` : `#${d.pr.number}`],
       d.place && [I.place, "Herdr 위치", esc([d.place.space, d.place.tab].filter(Boolean).join(" › "))],
     ].filter(Boolean);
+    const full = talk.get(k.id)?.value;
+    const you = full?.you ? shortPaths(full.you) : d.you;
+    const said = full?.said ? `<div class="md">${md(full.said)}</div>` : null;
     const theirs = k.status === "needs" && k.ask
-      ? `<div class="say ask"><b>${I.bot}물어본 것</b><p>${esc(k.ask)}</p></div>`
-      : d.agentSaid ? `<div class="say bot"><b>${I.bot}${esc(d.agent || "에이전트")}</b><p>${esc(d.agentSaid)}</p></div>` : "";
+      ? `<div class="say ask"><b>${I.bot}물어본 것</b>${said ?? `<p>${esc(k.ask)}</p>`}</div>`
+      : said || d.agentSaid ? `<div class="say bot"><b>${I.bot}${esc(d.agent || "에이전트")}</b>${said ?? `<p>${esc(d.agentSaid)}</p>`}</div>` : "";
     return `<header class="lift-head"><span class="chip">${ICON[k.status]}</span><span class="lift-state">${esc(k.kind || LABEL[k.status])}<em>${esc(agoText(k.since))}</em></span><button type="button" class="lift-x" data-close aria-label="닫기">${I.close}</button></header>
     <h2 id="lift-title">${esc(k.name)}</h2>
     ${k.topic ? `<p class="lift-topic">${esc(k.topic)}</p>` : ""}
     ${d.objective ? `<p class="lift-objective">목표: ${esc(d.objective)}</p>` : ""}
-    <div class="talk">${d.you ? `<div class="say me"><b>${I.you}나</b><p>${esc(d.you)}</p></div>` : ""}${theirs}${d.action ? `<div class="doing">${ICON.working}${esc(d.action)}</div>` : ""}</div>
+    <div class="talk">${you ? `<div class="say me${full?.you ? " full" : ""}"><b>${I.you}나</b><p>${esc(you)}</p></div>` : ""}${theirs}${d.action ? `<div class="doing">${ICON.working}${esc(d.action)}</div>` : ""}</div>
     <ul class="facts">${facts.map(([icon, key, val]) => `<li>${icon}<span>${key}</span><b>${val}</b></li>`).join("")}</ul>
     <footer class="lift-foot"><span class="lift-path">${esc(d.cwd || "")}</span>${k.terminal ? `<button type="button" class="lift-go" data-go="${esc(k.terminal)}">${I.open}${esc(pressed?.terminal === k.terminal && pressed.until > Date.now() ? pressed.text : "맥에서 열기")}</button>` : `<span class="lift-path">이 세션은 Herdr 창 밖에 있어</span>`}</footer>`;
   }
 
-  const findLift = () => !lift ? null : lift.kind === "key" ? state?.keys.find((x) => x.id === lift.id) : state?.accounts?.find((x) => x.id === lift.id);
+  const findLift = () => !lift ? null
+    : lift.kind === "key" ? state?.keys.find((x) => x.id === lift.id)
+    : lift.kind === "more" ? (moreList.length ? { status: loudest(moreList) } : null)
+    : state?.accounts?.find((x) => x.id === lift.id);
 
   function acctBody(a) {
     const d = a.detail;
@@ -265,6 +364,12 @@
     <footer class="lift-foot"><span class="lift-path">${esc(liftMsg)}</span><button type="button" class="lift-alt" data-close>취소</button><button type="button" class="lift-go" data-use="${esc(a.id)}">${ICON_ACCT}바꾸기</button></footer>`;
   }
 
+  function moreBody() {
+    return `<header class="lift-head"><span class="chip" aria-hidden="true">${ICON.more}</span><span class="lift-state" id="lift-title">접힌 세션 ${moreList.length}개<em>${esc(sumText(moreList))}</em></span><button type="button" class="lift-x" data-close aria-label="닫기">${I.close}</button></header>
+    <ul class="ovl">${moreList.map((k) => `<li><button type="button" class="s-${esc(k.status)}" data-row="${esc(k.id)}"${k.terminal ? "" : ` aria-disabled="true"`}><span class="chip" aria-hidden="true">${ICON[k.status]}</span><span><b>${esc(k.name)}</b><small>${esc(k.topic || k.line || "")}</small></span><em>${esc(ago(k.since))}</em></button></li>`).join("")}</ul>
+    <footer class="lift-foot"><span class="lift-path">누르면 맥에서 그 터미널로 이동해</span></footer>`;
+  }
+
   function openLift(kind, id, keyEl) {
     lift = { kind, id };
     liftMsg = "";
@@ -278,8 +383,11 @@
     const col = Math.round((r.left + r.width / 2 - g.left - colW / 2) / colW);
     const c0 = Math.min(Math.max(col - 1, 0), 2);
     const h = kind === "confirm" ? Math.min(g.height, 250) : g.height;
-    const box = { left: g.left - d.left + c0 * colW, top: g.bottom - d.top - h, width: colW * 3 - gap, height: h };
-    const st = kind === "key" ? ` s-${item.status}` : "";
+    // the overflow list covers the whole grid, not a 3x3 block
+    const box = kind === "more"
+      ? { left: g.left - d.left, top: g.top - d.top, width: g.width, height: g.height }
+      : { left: g.left - d.left + c0 * colW, top: g.bottom - d.top - h, width: colW * 3 - gap, height: h };
+    const st = kind === "key" ? ` s-${item.status}` : kind === "more" ? ` s-${loudest(moreList)}` : "";
     layer.innerHTML = `<article class="lift${st}" role="dialog" aria-modal="true" aria-labelledby="lift-title" style="left:${box.left}px;top:${box.top}px;width:${box.width}px;height:${box.height}px"><span class="glow"></span>${GRAIN}<div class="lift-body"></div></article>`;
     const card = layer.firstElementChild;
     card.style.transform = `translate(${r.left - d.left - box.left}px, ${r.top - d.top - box.top}px) scale(${r.width / box.width}, ${r.height / box.height})`;
@@ -302,9 +410,46 @@
     const item = findLift();
     const card = layer.querySelector(".lift");
     if (!item || !card) return closeLift(); // the session ended while open
+    if (lift.kind === "more") {
+      card.className = `lift s-${loudest(moreList)}${card.classList.contains("in") ? " in" : ""}`;
+      const body = card.querySelector(".lift-body");
+      const keep = body.querySelector(".ovl")?.scrollTop;
+      setHtml(body, moreBody());
+      if (keep != null) body.querySelector(".ovl").scrollTop = keep;
+      return;
+    }
     const st = lift.kind === "key" ? ` s-${item.status}` : "";
     card.className = `lift${st}${card.classList.contains("in") ? " in" : ""}`;
-    setHtml(card.querySelector(".lift-body"), lift.kind === "key" ? liftBody(item) : lift.kind === "acct" ? acctBody(item) : confirmBody(item));
+    const body = card.querySelector(".lift-body");
+    const before = body.querySelector(".talk");
+    const keep = before ? before.scrollTop : null;
+    const hadFull = !!before?.querySelector(".md");
+    setHtml(body, lift.kind === "key" ? liftBody(item) : lift.kind === "acct" ? acctBody(item) : confirmBody(item));
+    const after = body.querySelector(".talk");
+    if (after && after !== before) {
+      const answer = after.querySelector(".say.bot, .say.ask");
+      // the first time the full answer shows, start at the top of the answer; later refreshes keep the reader's place
+      if (!hadFull && after.querySelector(".md") && answer) after.scrollTop = Math.max(0, answer.offsetTop - after.offsetTop - 8);
+      else if (keep != null) after.scrollTop = keep;
+    }
+    if (after) markEdges(after);
+    if (lift.kind === "key") loadTalk(item);
+  }
+
+  async function loadTalk(k) {
+    const sig = `${k.since}|${k.detail?.agentSaid}|${k.detail?.tool?.at}`;
+    if (talk.get(k.id)?.sig === sig || talkBusy.has(k.id)) return;
+    talkBusy.add(k.id);
+    try {
+      const r = await fetch(`/api/talk?id=${encodeURIComponent(k.id)}`);
+      const value = r.ok ? await r.json() : null;
+      talk.set(k.id, { sig, value: value ?? talk.get(k.id)?.value ?? null });
+    } catch {
+      talk.set(k.id, { sig, value: talk.get(k.id)?.value ?? null });
+    } finally {
+      talkBusy.delete(k.id);
+    }
+    if (lift?.kind === "key" && lift.id === k.id) renderLift();
   }
 
   async function useAccount(id) {
@@ -360,11 +505,50 @@
     if (go) focusTerminal(go.dataset.go);
     const use = e.target.closest("[data-use]");
     if (use) useAccount(use.dataset.use);
+    const row = e.target.closest("[data-row]");
+    if (row) {
+      const k = state?.keys.find((x) => x.id === row.dataset.row);
+      closeLift();
+      if (k?.terminal) focusTerminal(k.terminal);
+      return;
+    }
+    // Safari leaves fullscreen on a downward swipe and a page cannot stop it, so the card pages by tap:
+    // the top half of the conversation goes back a page, the bottom half forward
+    const talkEl = e.target.closest(".talk");
+    if (talkEl && !e.target.closest("a, button") && talkEl.scrollHeight > talkEl.clientHeight) {
+      const r = talkEl.getBoundingClientRect();
+      const dir = e.clientY < r.top + r.height / 2 ? -1 : 1;
+      talkEl.scrollBy({ top: dir * talkEl.clientHeight * 0.85, behavior: "smooth" });
+    }
   });
+  // fades at the edges that still have more to read
+  const markEdges = (t) => { t.classList.toggle("more-up", t.scrollTop > 4); t.classList.toggle("more-down", t.scrollTop + t.clientHeight < t.scrollHeight - 4); };
+  layer.addEventListener("scroll", (e) => { if (e.target.classList?.contains("talk")) markEdges(e.target); }, true);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLift(); });
+
+  function showFolder(name) {
+    openFolder = name;
+    armFolder();
+    render();
+  }
+  function closeFolder() {
+    openFolder = null;
+    clearTimeout(folderTimer);
+    render();
+  }
+  function armFolder() {
+    clearTimeout(folderTimer);
+    if (openFolder) folderTimer = setTimeout(closeFolder, FOLDER_MS);
+  }
+  for (const ev of ["pointerdown", "pointermove"]) document.addEventListener(ev, () => { if (openFolder) armFolder(); }, { capture: true, passive: true });
 
   grid.addEventListener("click", (e) => {
     if (swallowClick) { swallowClick = false; return; }
+    const folder = e.target.closest("[data-folder]");
+    if (folder) return showFolder(folder.dataset.folder);
+    if (e.target.closest("[data-back]")) return closeFolder();
+    const more = e.target.closest("[data-more]");
+    if (more) return openLift("more", null, more);
     const btn = e.target.closest(".key[data-terminal]");
     if (btn) focusTerminal(btn.dataset.terminal);
   });

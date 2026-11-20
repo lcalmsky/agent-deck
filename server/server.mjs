@@ -8,7 +8,8 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { execFile } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { cookieValue, safeDecode } from "./http.mjs";
+import { byteRange, cookieValue, safeDecode } from "./http.mjs";
+import { findTranscript, readLastExchange } from "./talk.mjs";
 import { parseScan, terminalsOf, buildKeys, accountsOf, liveWindowsOf, liveDetailOf, planOf } from "./model.mjs";
 
 const HOME = os.homedir();
@@ -165,9 +166,35 @@ async function focus(terminal) {
   return { ok: true };
 }
 
+// ---- the long-press card's full last exchange, read from the transcript on demand ----
+const talkCache = new Map(); // session id -> { file, sig, value }
+function claudeRoots() {
+  const roots = [process.env.CLAUDE_CONFIG_DIR || path.join(HOME, ".claude")];
+  try { for (const d of fs.readdirSync(path.join(HOME, ".claude-accounts"))) roots.push(path.join(HOME, ".claude-accounts", d)); } catch {}
+  return roots;
+}
+function talkOf(id) {
+  const raw = scan.sessions.find((x) => x.sessionId === id);
+  if (!raw || raw.agent !== "claude") return null; // only sessions the scan reports; Codex keeps the scan's text
+  const hit = talkCache.get(id);
+  try {
+    const file = hit?.file ?? findTranscript(claudeRoots(), raw.cwd, id);
+    if (!file) return null;
+    const st = fs.statSync(file);
+    const sig = `${st.size}:${st.mtimeMs}`;
+    if (hit?.sig === sig) return hit.value;
+    const value = readLastExchange(file);
+    talkCache.set(id, { file, sig, value });
+    return value;
+  } catch {
+    talkCache.delete(id);
+    return null;
+  }
+}
+
 // ---- http ----
 const clients = new Set();
-const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".png": "image/png", ".svg": "image/svg+xml", ".json": "application/json" };
+const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".png": "image/png", ".svg": "image/svg+xml", ".json": "application/json", ".mp4": "video/mp4", ".webp": "image/webp" };
 
 const safeEq = (a, b) => typeof a === "string" && a.length === b.length && crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
 
@@ -228,6 +255,7 @@ async function handle(req, res) {
       theme_color: "#f3f1ed",
     }), "application/manifest+json");
   }
+  if (url.pathname === "/api/talk") return send(res, 200, JSON.stringify(talkOf(url.searchParams.get("id"))), "application/json");
   if (url.pathname === "/api/focus" && req.method === "POST") {
     const body = await readBody(req);
     if (typeof body.terminal !== "string" || !/^[A-Za-z0-9_-]{1,64}$/.test(body.terminal)) return send(res, 400, JSON.stringify({ ok: false, error: "bad terminal" }), "application/json");
@@ -251,7 +279,19 @@ async function handle(req, res) {
   if (!file.startsWith(PUBLIC + path.sep)) return send(res, 404, "not found");
   fs.readFile(file, (err, data) => {
     if (err) return send(res, 404, "not found");
-    send(res, 200, data, TYPES[path.extname(file)] ?? "application/octet-stream");
+    const type = TYPES[path.extname(file)] ?? "application/octet-stream";
+    // iOS Safari refuses to play a video unless the server answers byte ranges
+    const range = byteRange(req.headers.range, data.length);
+    if (range?.unsatisfiable) return send(res, 416, "", "text/plain", { "Content-Range": `bytes */${data.length}` });
+    if (range) {
+      const { start, end } = range;
+      return send(res, 206, data.subarray(start, end + 1), type, {
+        "Content-Range": `bytes ${start}-${end}/${data.length}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": String(end - start + 1),
+      });
+    }
+    send(res, 200, data, type, { "Accept-Ranges": "bytes", "Content-Length": String(data.length) });
   });
 }
 

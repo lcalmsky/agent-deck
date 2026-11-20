@@ -184,12 +184,37 @@ body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none
 .lift h2 { margin: 2px 0 0; font-size: 32px; font-weight: 700; letter-spacing: -.02em; overflow-wrap: break-word; min-width: 0; }
 .lift-topic { margin: -6px 0 0; font-size: 16px; color: var(--ui-ink-2); }
 .lift-objective { margin: 0; font-size: 13px; color: var(--ui-ink-2); }
-.talk { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.talk { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; margin: 0 -8px; padding: 0 8px 4px; }
+.talk > * { flex-shrink: 0; }
+.talk.more-up { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 36px); mask-image: linear-gradient(to bottom, transparent, #000 36px); }
+.talk.more-down { -webkit-mask-image: linear-gradient(to top, transparent, #000 36px); mask-image: linear-gradient(to top, transparent, #000 36px); }
+.talk.more-up.more-down { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 36px, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to bottom, transparent, #000 36px, #000 calc(100% - 36px), transparent); }
 .say { max-width: 92%; padding: 12px 16px; border-radius: 18px; background: var(--ui-hair); }
 .say b { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: var(--ui-ink-2); }
 .say b svg { width: 14px; height: 14px; }
 .say p { margin: 0; font-size: 14.5px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .say.me { align-self: flex-end; max-width: 85%; }
+.say.me.full p { display: block; -webkit-line-clamp: none; overflow: visible; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* the agent's answer, rendered from Markdown */
+.md { font-size: 14.5px; line-height: 1.6; overflow-wrap: anywhere; }
+.md > :first-child { margin-top: 0; }
+.md > :last-child { margin-bottom: 0; }
+.md p, .md ul, .md ol, .md pre, .md blockquote, .md .md-table { margin: 0 0 .7em; }
+.md h3, .md h4 { margin: 1em 0 .4em; font-size: 15.5px; font-weight: 700; }
+.md h4 { font-size: 14.5px; }
+.md ul, .md ol { padding-left: 1.3em; }
+.md li + li { margin-top: .2em; }
+.md strong { font-weight: 700; }
+.md a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.md code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em; padding: .1em .35em; border-radius: 6px; background: var(--ui-hair); }
+.md pre { padding: 10px 12px; border-radius: 10px; background: var(--ui-hair); overflow-x: auto; }
+.md pre code { padding: 0; background: none; font-size: 12.5px; }
+.md blockquote { padding-left: .8em; box-shadow: inset 2px 0 0 var(--ui-hair); color: var(--ui-ink-2); }
+.md hr { border: 0; border-top: 1px solid var(--ui-hair); margin: .9em 0; }
+.md-table { overflow-x: auto; }
+.md table { border-collapse: collapse; font-size: 13px; }
+.md th, .md td { padding: 4px 10px 4px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--ui-hair); }
+.md th { font-weight: 600; }
 .say.bot { align-self: flex-start; background: rgba(var(--c), .12); box-shadow: inset 0 0 0 1px rgba(var(--c), .25); }
 .say.ask { align-self: flex-start; background: rgba(var(--c-wait), .16); box-shadow: inset 0 0 0 1.5px rgba(var(--c-wait), .55); }
 .doing { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ui-ink-2); }
@@ -270,6 +295,33 @@ body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+/* ---- repository folders: one key per repository, coloured by its loudest session ---- */
+.well.folder::before, .well.folder::after { content: ""; position: absolute; left: 10%; right: 10%; height: 20px; top: -6px; border-radius: 12px; background: rgba(var(--c), .28); z-index: -1; }
+.well.folder::after { left: 18%; right: 18%; top: -11px; background: rgba(var(--c), .14); }
+.well.folder { --c: var(--c-neutral); }
+.well.folder.s-done { --c: var(--c-done); } .well.folder.s-working { --c: var(--c-work); } .well.folder.s-needs { --c: var(--c-wait); } .well.folder.s-stalled { --c: var(--c-stall); }
+.count { font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(var(--c), .2); color: rgb(var(--cd)); }
+:root[data-scheme="dark"] .count { color: rgb(var(--c)); }
+.fdots { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+.fdots i { width: 9px; height: 9px; border-radius: 50%; background: rgb(var(--dc)); }
+.fdots i.idle { opacity: .45; }
+.back .face { justify-content: center; align-items: center; text-align: center; gap: 8px; }
+.back .face svg { width: 34px; height: 34px; opacity: .8; }
+.back .name { font-size: 18px; }
+.grid.pop { animation: pop .26s cubic-bezier(.2, .8, .2, 1); }
+@keyframes pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+
+/* ---- overflow key and its sheet ---- */
+.more .name { font-size: 26px; font-weight: 750; letter-spacing: -.02em; }
+.ovl { list-style: none; margin: 0 -8px; padding: 0 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; overflow-y: auto; flex: 1; min-height: 0; align-content: start; }
+.ovl li button { --c: var(--c-neutral); width: 100%; display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 12px; border: 0; border-radius: 14px; background: var(--ui-hair); color: var(--ui-ink); font: inherit; text-align: left; cursor: pointer; }
+.ovl li button.s-done { --c: var(--c-done); } .ovl li button.s-working { --c: var(--c-work); } .ovl li button.s-needs { --c: var(--c-wait); } .ovl li button.s-stalled { --c: var(--c-stall); }
+.ovl .chip { width: 30px; height: 30px; border-radius: 9px; color: rgb(var(--c)); background: rgba(var(--c), .16); }
+.ovl .chip svg { width: 16px; height: 16px; }
+.ovl b { display: block; font-size: 14.5px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ovl small { display: block; font-size: 12px; color: var(--ui-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ovl em { font-style: normal; font-size: 12px; color: var(--ui-ink-2); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
