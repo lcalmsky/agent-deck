@@ -1,0 +1,6 @@
+#!/bin/sh
+# Demo stand-in for the Herdr CLI: lists one terminal per demo session and accepts every focus.
+case "$1" in
+  ls) node -e 'const ids=["a1","b2","c3","d4","e5","f6","g7"]; console.log(JSON.stringify({ spaces: [{ id: "sp", name: "demo", tabs: [{ id: "tb", name: "1", terminals: ids.map((i) => ({ terminal: "t-" + i, pane: "p-" + i })) }] }] }))' ;;
+  *) echo ok ;;
+esac

@@ -1,0 +1,3 @@
+#!/bin/sh
+# Demo: no keychain lookups, so usage comes from the demo caches only.
+exit 1

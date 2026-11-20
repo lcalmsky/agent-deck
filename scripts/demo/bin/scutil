@@ -1,0 +1,3 @@
+#!/bin/sh
+# Demo: the computer name the connection key shows.
+echo "Studio Mac"

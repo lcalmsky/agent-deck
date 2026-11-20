@@ -1,0 +1,3 @@
+#!/bin/sh
+# Demo: the server calls `open -a Herdr` after a focus; do nothing.
+exit 0
